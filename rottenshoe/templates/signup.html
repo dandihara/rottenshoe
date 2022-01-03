@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-3">
+    <div class="row my-3">
+        <div class="col-4">
+            <h2>회원가입</h2>
+        </div>
+        <div class="col-8 text-right">
+            <span>또는 <a href="{% url 'rotten:login' %}">로그인 하세요.</a></span>
+        </div>
+    </div>
+    <form method="post" id="postForm">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="email">이메일</label>
+            <input type="email" class="form-control" name="email" id="email">
+        </div>
+        <div class="form-group">
+            <label for="password1">비밀번호</label>
+            <input type="password" class="form-control" name="password1" id="password1">
+        </div>
+        <div class="form-group">
+            <label for="password2">비밀번호 확인</label>
+            <input type="password" class="form-control" name="password2" id="password2">
+        </div>
+        <div class="form-group">
+            <label for="nickname">닉네임</label>
+            <input type="text" class="form-control" name="nickname" id="nickname" accept-charset="UTF-8">
+        </div>
+    </form>
+    <button type="submit" class="btn btn-primary" id = 'register'>회원가입</button>
+
+    <script>
+
+        const rBtn = document.getElementById('register');
+
+        rBtn.addEventListener('click',signUp);
+
+        function signUp(){
+
+            var p1 = document.getElementById("password1").value;
+            var p2 = document.getElementById('password2').value;
+            var email = document.getElementById('email').value;
+            var nickname = document.getElementById('nickname').value;
+
+            newUser = {
+                'email' : email,
+                'password':p1,
+                'confirm_password':p2,
+                'nickname' : nickname
+            };
+
+            $.ajax({
+                type : "POST",
+                url : "register",
+                data : JSON.stringify(newUser),
+                contentType : 'application/json; charset:UTF-8',
+
+                success : function(res){
+                    if(res['result'] == 'ok'){
+                        location.href = "{% url 'rotten:index' %}";
+                    }
+                    else if(res['result'] == 'password'){
+                        location.href = "{% url 'rotten:register' %}";
+                        alert('비밀번호가 일치하지 않습니다.');
+                    }
+                    else if(res['result'] == 'email'){
+                        location.href = "{% url 'rotten:register' %}";
+                        alert('이메일 형식이 올바르지 않습니다.');
+                    }
+
+                }
+            });
+
+        }
+    </script>
+</div>
+{% endblock %}

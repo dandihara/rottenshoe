@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if lists %}
+        <ul>
+            {% for content in lists %}
+            <li><a href="{% url 'rotten:detail' content.id %}">{{ content.sneaker_name }}</a></li>
+            {% endfor %}
+        </ul>   
+    {% else %}
+    <p>no data</p>
+    {% endif %}
+    
+{% endblock %}
+
+

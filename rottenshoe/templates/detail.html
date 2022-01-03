@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if data.thumbnail %}
+    <img src = "{{data.thumbnail.url}}" width = "400px" height="300px"/>
+    {% endif %}
+    <div>{{data.model_number}}</div>
+    <div>{{data.brand}}</div>
+    <div>{{data.price}}</div>
+    <div>{{data.retail_date}}</div>
+    <div>{{data.sneaker_name}}</div>
+    <div>
+        <input type = 'text' class = 'comment' id = 'comment'/><button id = 'send'>작성</button>
+        <div>댓글 리스트</div>
+        {% for comment in comments %}
+            <div<label>{{comment.user_id}}</label>{{comment.comment}}</div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">신발등록</h5>
+    <form method="post" class="post-form my-3" action = "{% url 'rotten:boardPost' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="thumnail">메인 이미지</label>
+            <input type="image" class="form-control" name="thumnail" id="thumnail"
+                   value="{{ form.thumnail.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="sneaker_name">모델명</label>
+            <input class="form-control" name="sneaker_name"
+                      id="sneaker_name">{{ form.sneaker_name.value|default_if_none:'' }}</input>
+        </div>
+        <div class="form-group">
+            <label for="model_number">모델번호</label>
+            <input class="form-control" name="model_number"
+                      id="model_number" type="text">{{ form.model_number.value|default_if_none:'' }}</input>
+        </div>
+        <div class="form-group">
+            <label for="brand">브랜드</label>
+            <input class="form-control" name="brand"
+                      id="brand">{{ form.brand.value|default_if_none:'' }}</input>
+        </div>
+        <div class="form-group">
+            <label for="price">가격</label>
+            <input class="form-control" name="price"
+                      id="price">{{ form.price.value|default_if_none:'' }}</input>
+        </div>
+        <div class="form-group">
+            <label for="retail_date">출시일</label>
+            <input class="form-control" name="retail_date"
+                      id="retail_date" type = 'date'>{{ form.retail_date.value|default_if_none:'' }}</input>
+        </div>
+        <button type="submit" class="btn btn-primary">저장하기</button>
+    </form>
+</div>
+{% endblock %}
