@@ -1,5 +1,6 @@
+from django.http import response
 from django.http.response import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.conf import settings
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -7,16 +8,14 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse, HttpResponseRedirect, request
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password
+from django.views.generic import RedirectView
 
 from rottenshoe.forms import BoardForm,UserForm
-from rottenshoe.token import create_token
+from rottenshoe.token import create_token,decoder
 
 import json
 import re
 
-
-
-# Create your views here.
 from .models import Comment, SneakerBoard, User
 
 #req => JsonResponse 객체   
@@ -49,7 +48,7 @@ def detail(req,id):
         comments = Comment.objects.filter(board_id = id)
         if board is None :
             return redirect('rotten:index')
-        return render(req,'detail.html',{'data' : board})
+        return render(req,'detail.html',{'data' : board, 'comments' : comments})
 
 
 def login(req):
@@ -61,7 +60,6 @@ def login(req):
             #access_token 발생 => 유저 확인용
             access_token =  create_token(client.nickname,client.email,client.id).decode('utf-8')
             req.session['access_token'] = access_token
-            print(req.session['access_token'])
             return JsonResponse({'result':'ok', 'access_token' : access_token})
         else:
             return JsonResponse({'result':'not exist'})
@@ -93,3 +91,28 @@ def register(req):
             return JsonResponse({'result' : 'password'})
         if not re.search(regEmail,data['email']):
             return JsonResponse({'result':'email'})
+
+def comment(req):
+    if req.method == 'POST':
+        try:
+            token = req.session['access_token']
+            data = json.loads(req.body.decode('utf-8'))
+            # get => == first / limit 1
+            # filter => result to list / where ~
+            board = SneakerBoard.objects.get(id = int(data['board_id']))
+            user = get_object_or_404(User,pk=decoder(token)['id']) # ?
+        
+            co = Comment(
+                board_id = board,
+                user_id = user,
+                comment = data['comment']
+            )
+            co.save()
+            return JsonResponse({'result' : 'ok'})
+        except KeyError:
+            return JsonResponse({'result' : 'token값 없음'})
+
+
+def myPage(req):
+    pass
+

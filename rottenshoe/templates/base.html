@@ -20,13 +20,14 @@
 </head>
 <body>
     <div class = 'top' width = '100%' height = '100px'>
-        <span width = '20%'>LOGO</span>
+        <span width = '20%'><a href = "{% url 'rotten:index' %}" style = 'text-decoration-line: none'>LOGO</a></span>
         {% if user.is_authenticated %}
-        <span width = '25%'><a href = "{% url 'rotten:logout' %}" style = 'text-decoration: none'>{{user.username}} LOGOUT</a></span>
+        <span width = '25%'><a href = "{% url 'rotten:logout' %}" style = 'text-decoration-line: none'>{{user.nickname}} LOGOUT</a></span>
         <span width = '25%'>MYPAGE</span>
         {% else %}
-        <span width = '25%'><a href = "{% url 'rotten:login' %}" style = 'text-decoration: none'>LOGIN</a></span>
-        <span width = '25%'><a href = "{% url 'rotten:register' %}" style = 'text-decoration: none'>REGISTER</a></span>
+        <span width = '25%'><a href = "{% url 'rotten:login' %}" style = 'text-decoration-line: none'>LOGIN</a></span>
+        <span width = '25%'><a href = "{% url 'rotten:register' %}" style = 'text-decoration-line: none'>REGISTER</a></span>
+        <span width = '25%'><a href = "{% url 'rotten:mypage' %}" style = 'text-decoration-line: none'>마이페이지</a></span>
         {% endif %}
     </div>
 <!-- 기본 템플릿 안에 삽입될 내용 Start -->

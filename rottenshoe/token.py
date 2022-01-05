@@ -11,3 +11,6 @@ def create_token(nickname,email,id):
         'nickname' : nickname
     }
     return jwt.encode(payload,"secret_key is me",algorithm = 'HS256')
+
+def decoder(token):
+    return jwt.decode(token,"secret_key is me",algorithm="HS256")

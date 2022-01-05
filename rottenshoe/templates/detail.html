@@ -4,16 +4,49 @@
     {% if data.thumbnail %}
     <img src = "{{data.thumbnail.url}}" width = "400px" height="300px"/>
     {% endif %}
+    <div id = 'model_number' style ='display: none;' >{{data.id}}</div>
     <div>{{data.model_number}}</div>
     <div>{{data.brand}}</div>
     <div>{{data.price}}</div>
     <div>{{data.retail_date}}</div>
     <div>{{data.sneaker_name}}</div>
     <div>
-        <input type = 'text' class = 'comment' id = 'comment'/><button id = 'send'>작성</button>
+        <form>
+            {%csrf_token%}
+            <input type = 'text' class = 'comment' id = 'comment' accept-charset="UTF-8"/>
+        </form>
+        <button id = 'send'>작성</button>
         <div>댓글 리스트</div>
         {% for comment in comments %}
-            <div<label>{{comment.user_id}}</label>{{comment.comment}}</div>
+            <div<label>{{comment.user_id.nickname}}</label></div>
+            <div>댓글 : {{comment.comment}}</div>
         {% endfor %}
     </div>
+    <script>
+        const btn = document.getElementById('send');
+        btn.addEventListener('click',() => {
+            var comment = document.getElementById('comment').value;
+            var b_id = document.getElementById('model_number').innerText;
+            commentDic = {
+                'board_id':b_id,
+                'comment' : comment
+            };
+            $.ajax({
+                type:'POST',
+                url:'comment',
+                contentType : 'application/json; charset:UTF-8',
+                data : JSON.stringify(commentDic),
+
+                success : function(res){
+                    if(res['result'] == 'ok'){
+                        location.reload();
+                    }
+                    else{
+                        alert('로그인을 하십시오.');
+                        location.href = "{% url 'rotten:login'%}";
+                    }
+                }
+            })
+        })
+    </script>
 {% endblock %}
