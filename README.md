@@ -18,3 +18,8 @@
 
 backend : django
 frontend : vanilla js / html+css
+
+
+
+- v1 ERD 구상도
+![v1](https://user-images.githubusercontent.com/23503161/148335082-07ec9c01-c647-4e8a-82fb-74a84f2d332d.PNG)
