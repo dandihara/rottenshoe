@@ -1,11 +1,11 @@
 from django import forms
 
-from .models import SneakerBoard
+from .models import Sneakers
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 class BoardForm(forms.ModelForm):
     class Meta:
-        model = SneakerBoard
+        model = Sneakers
         fields = ['thumbnail','sneaker_name','model_number','brand','price','retail_date']
         widgets = {
             'retail_date' : forms.DateInput(format= ("%Y/%m/%d"), attrs={'class':'form-control','placeholder':'출시일자','type':'date'}),

@@ -2,13 +2,19 @@
 
 {% block content %}
     {% if data.thumbnail %}
-    <img src = "{{data.thumbnail.url}}" width = "400px" height="300px"/>
+    <img src = "{{data.thumbnail.url}}" alt = "thumbnail"/>
     {% endif %}
     <div id = 'model_number' style ='display: none;' >{{data.id}}</div>
     <div>{{data.model_number}}</div>
+    <br/>
     <div>{{data.brand}}</div>
+    <br/><br/>  
     <div>{{data.price}}</div>
+    <br/>
+    <br/>
     <div>{{data.retail_date}}</div>
+    <br/>
+    <br/>
     <div>{{data.sneaker_name}}</div>
     <div>
         <form>
@@ -28,7 +34,7 @@
             var comment = document.getElementById('comment').value;
             var b_id = document.getElementById('model_number').innerText;
             commentDic = {
-                'board_id':b_id,
+                'board_id': b_id,
                 'comment' : comment
             };
             $.ajax({

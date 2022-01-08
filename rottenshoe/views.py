@@ -16,11 +16,11 @@ from rottenshoe.token import create_token,decoder
 import json
 import re
 
-from .models import Comment, SneakerBoard, User
+from .models import Comment, Sneakers, User
 
 #req => JsonResponse 객체   
 def index(req):
-    shoeList = SneakerBoard.objects.all()
+    shoeList = Sneakers.objects.all()
 
     return render(req,'index.html', context = {'lists' : shoeList})
 
@@ -33,9 +33,16 @@ def boardPost(req):
     elif req.method == 'POST':
         form = BoardForm(req.POST)
         if form.is_valid():
-            board = form.save(commit = False)
-            board.save()
-            return redirect('rotten:index')
+            s = Sneakers()
+            s.model_number = req.POST['model_number']
+            s.brand = req.POST['brand']
+            s.thumbnail = req.FILES['thumbnail']
+            s.sneaker_name = req.POST['snaekers_name']
+            s.retail_date = req.POST['retail_date']
+            s.price = req.POST['price']
+
+            s.save()
+            return redirect('/rotten/detail/' + str(s.id))
         else:
             form = BoardForm()
         context = {'form': form}
@@ -44,7 +51,7 @@ def boardPost(req):
 
 def detail(req,id):
     if req.method == 'GET':
-        board = SneakerBoard.objects.get(id = id)
+        board = Sneakers.objects.get(id = id)
         comments = Comment.objects.filter(board_id = id)
         if board is None :
             return redirect('rotten:index')
@@ -99,7 +106,7 @@ def comment(req):
             data = json.loads(req.body.decode('utf-8'))
             # get => == first / limit 1
             # filter => result to list / where ~
-            board = SneakerBoard.objects.get(id = int(data['board_id']))
+            board = Sneakers.objects.get(id = int(data['board_id']))
             user = get_object_or_404(User,pk=decoder(token)['id']) # ?
         
             co = Comment(

@@ -33,17 +33,20 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
-class SneakerBoard(models.Model):
+class Sneakers(models.Model):
     sneaker_name = models.CharField(max_length=200)
     model_number = models.CharField(max_length=30)
     brand = models.CharField(max_length=100)
     price = models.IntegerField()
-    hot_score = models.FloatField(default=0.0)
-    thumbnail = models.ImageField(upload_to = settings.MEDIA_ROOT, blank = True)
+    score = models.FloatField(default=0.0)
+    thumbnail = models.ImageField(upload_to = '', blank = True)
     retail_date = models.DateField()
 
     def __str__(self):
         return self.model_number
+
+    class Meta:
+        db_table = 'sneakers'
 
 
 class User(AbstractBaseUser):
@@ -65,14 +68,23 @@ class User(AbstractBaseUser):
     def has_perm(self, perm, obj=None):
         return True
 
+    class Meta:
+        db_table = 'User'
+
 class Comment(models.Model):
-    board_id  = models.ForeignKey(SneakerBoard, on_delete=CASCADE)
+    board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)
     user_id = models.ForeignKey(User, on_delete = CASCADE)
     comment = models.TextField()
 
+    class Meta:
+        db_table = 'comments'
+
 class ScoreBoard(models.Model):
-    board_id  = models.ForeignKey(SneakerBoard, on_delete=CASCADE)
+    board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)
     user_id = models.ForeignKey(User, on_delete = CASCADE)
     score = models.FloatField()
+
+    class Meta:
+        db_table = 'sneakers_score'
     
 

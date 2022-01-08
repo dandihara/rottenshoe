@@ -127,13 +127,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    os.path.join(BASE_DIR / 'static'),
 ]
 
+# MEDIA 파일 경로
+MEDIA_URL = '/media/'
 
-MEDIA_URL = "/thumbnail/"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 로그인 성공후 이동하는 URL
 LOGIN_REDIRECT_URL = '/'
