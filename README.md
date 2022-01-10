@@ -22,4 +22,5 @@ frontend : vanilla js / html+css
 
 
 - v1 ERD 구상도
-![v1](https://user-images.githubusercontent.com/23503161/148335082-07ec9c01-c647-4e8a-82fb-74a84f2d332d.PNG)
+
+![v1 erd](https://user-images.githubusercontent.com/23503161/148772752-ba25b5ad-d1aa-4fba-b45e-5b477c4c83d1.PNG)
