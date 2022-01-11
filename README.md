@@ -23,4 +23,7 @@ frontend : vanilla js / html+css
 
 - v1 ERD 구상도
 
-![v1 erd](https://user-images.githubusercontent.com/23503161/148772752-ba25b5ad-d1aa-4fba-b45e-5b477c4c83d1.PNG)
+![v1 erd](https://user-images.githubusercontent.com/23503161/148891749-fffba11c-bbe0-4f70-b4c9-6581ad9579ab.PNG)
+
+
+검색에 대한 고민 - 대/소문자 , 키워드 검색 방식(키워드를 신발 테이블 속성값으로 추가하여 조회시에 이용)
