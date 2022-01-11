@@ -1,3 +1,4 @@
+from django.db.models.query_utils import Q
 from django.http import response
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -9,6 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect, request
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password
 from django.views.generic import RedirectView
+from django.db.utils import IntegrityError
 
 from rottenshoe.forms import BoardForm,UserForm
 from rottenshoe.token import create_token,decoder
@@ -86,13 +88,16 @@ def register(req):
 
         if data['password'] == data['confirm_password'] and re.search(regEmail,data['email']):
             hashed_password = make_password(data['password'])
-            newUser = User(
-                email = data['email'],
-                password = hashed_password,
-                nickname = data['nickname']
-            )
-            newUser.save()
-            auth_login(req,newUser)
+            try:
+                newUser = User(
+                    email = data['email'],
+                    password = hashed_password,
+                    nickname = data['nickname']
+                )
+                newUser.save()
+                auth_login(req,newUser)
+            except IntegrityError:
+                return JsonResponse({'result':'이미 가입 된 이메일입니다.'})
             return JsonResponse({'result':'ok'})
         if data['password'] != data['confirm_password']:
             return JsonResponse({'result' : 'password'})
@@ -107,7 +112,7 @@ def comment(req):
             # get => == first / limit 1
             # filter => result to list / where ~
             board = Sneakers.objects.get(id = int(data['board_id']))
-            user = get_object_or_404(User,pk=decoder(token)['id']) # ?
+            user = get_object_or_404(User,pk=decoder(token)['id']) # 있거나 없음 error
         
             co = Comment(
                 board_id = board,
@@ -122,4 +127,17 @@ def comment(req):
 
 def myPage(req):
     pass
+
+
+def search(req):
+    result = []
+    word_list = req.GET.get('search').split(" ")
+    print(word_list)
+    for word in word_list:
+        # icontains / contains 차이 대소문자 생각 하고 안 하고 차이
+        # 단, SQLite는 LIKE 키워드가 없기에 위의 내용 적용 불가
+        result += list(Sneakers.objects.filter(Q(sneaker_name__icontains = word) | 
+                                                    Q(brand__icontains = word)))
+    print(result)
+    return(req,'search.html',result)
 

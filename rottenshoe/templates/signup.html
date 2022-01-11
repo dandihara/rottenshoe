@@ -68,6 +68,10 @@
                         location.href = "{% url 'rotten:register' %}";
                         alert('이메일 형식이 올바르지 않습니다.');
                     }
+                    else{
+                        location.href = "{% url 'rotten:register' %}";
+                        alert(res['result']);
+                    }
 
                 }
             });

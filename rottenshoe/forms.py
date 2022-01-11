@@ -22,8 +22,24 @@ class BoardForm(forms.ModelForm):
 
 
 class UserForm(UserCreationForm):
-    nickname = forms.CharField(label = '닉네임')
+    nickname = forms.CharField(label = '닉네임', required=True)
+    password = forms.CharField(label = '비밀번호', required=True)
+    c_password = forms.CharField(label = '비밀번호 확인', required=True)
     class Meta:
         model = User
-        fields = ['username', 'password1' , 'password2','nickname']
+        fields = ['username', 'password1' , 'password2', 'nickname']
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password1')
+        c_password = self.cleaned_data.get('password2')
+
+        if password == c_password:
+            pass
+        else:
+            print("비밀번호 불일치!")
+
+
+
+
+
 

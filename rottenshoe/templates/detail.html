@@ -2,7 +2,7 @@
 
 {% block content %}
     {% if data.thumbnail %}
-    <img src = "{{data.thumbnail.url}}" alt = "thumbnail"/>
+    <img src = "{{data.thumbnail.url}}" alt = "thumbnail" width = '300px' height="300px"/>
     {% endif %}
     <div id = 'model_number' style ='display: none;' >{{data.id}}</div>
     <div>{{data.model_number}}</div>
@@ -19,24 +19,27 @@
     <div>
         <form>
             {%csrf_token%}
-            <input type = 'text' class = 'comment' id = 'comment' accept-charset="UTF-8"/>
+            <input type = 'text' class = 'comment' id = 'comment' accept-charset="UTF-8" onkeypress="if(event.keyCode == 13) comments();"
+                            placeholder=" 이거 어때 ??"/>
         </form>
-        <button id = 'send'>작성</button>
         <div>댓글 리스트</div>
         {% for comment in comments %}
-            <div<label>{{comment.user_id.nickname}}</label></div>
-            <div>댓글 : {{comment.comment}}</div>
+            <div><label> 닉네임 : {{comment.user_id.nickname}}</label>
+               <span> 댓글 : {{comment.comment}}</span></div>
+            <br/>
         {% endfor %}
     </div>
     <script>
-        const btn = document.getElementById('send');
-        btn.addEventListener('click',() => {
+
+        function comments(){
             var comment = document.getElementById('comment').value;
             var b_id = document.getElementById('model_number').innerText;
+
             commentDic = {
                 'board_id': b_id,
                 'comment' : comment
             };
+
             $.ajax({
                 type:'POST',
                 url:'comment',
@@ -53,6 +56,6 @@
                     }
                 }
             })
-        })
+        }
     </script>
 {% endblock %}

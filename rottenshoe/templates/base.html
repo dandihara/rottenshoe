@@ -31,6 +31,7 @@
         {% endif %}
     </div>
 <!-- 기본 템플릿 안에 삽입될 내용 Start -->
+<input type = 'text' id = 'search' onkeypress="if(event.keyCode == 13) search()"/>
 {% block content %}
 {% endblock %}
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
@@ -39,4 +40,17 @@
     <div>제작자 - MOON</div>
     <div>문의 - dandihara@gmail.com</div>
 </footer>
+<script>
+    keyword = document.getElementById('search').text;
+    console.log(keyword);
+
+    function search(){
+        $.ajax({
+            type : 'GET',
+            url : 'search',
+            contentType : 'charset:UTF-8',
+            data : keyword
+        });
+    }
+</script>
 </html>
