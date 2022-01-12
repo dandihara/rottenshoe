@@ -8,7 +8,7 @@
 - cffi         1.15.0
 - cryptography 36.0.1
 - Django       4.0.1
-- jwt          1.3.1
+- PyJWT        2.3.0
 - mysqlclient  2.1.0
 - Pillow       9.0.0
 - pip          20.2.3
