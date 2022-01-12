@@ -3,6 +3,20 @@
 -> 로튼토마토를 모티브하여 만든 서비스입니다. 영화가 아닌 신발로 바꾸어서 사람들이 점수를 매기거나 sns형식의 칸을 두어 서로의 룩을 보는 컨텐츠와 
 비슷한 유형의 신발을 추천 해 주는 것도 추가할 예정입니다.
 
+# require.txt
+asgiref      3.4.1
+cffi         1.15.0
+cryptography 36.0.1
+Django       4.0.1
+jwt          1.3.1
+mysqlclient  2.1.0
+Pillow       9.0.0
+pip          20.2.3
+pycparser    2.21
+setuptools   49.2.1
+sqlparse     0.4.2
+tzdata       2021.5
+
 # 버전단위 
 - v1 
 1) 신발 검색(대/소문자, 키워드, 영어 한글 혼용 가능)
