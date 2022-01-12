@@ -4,30 +4,18 @@
   신발을 보고 이것의 대한 각자의 평론을 하며 현재 뜨는 아이템이 무엇인지 판단 내릴 수 있고, 신발을 이용한 패션 코디등을 서로에게 보여주며 스니커즈 씬 전문 커뮤니티를 만들고자 하였습니다.
 
 # require.txt
-asgiref      3.4.1
-
-cffi         1.15.0
-
-cryptography 36.0.1
-
-Django       4.0.1
-
-jwt          1.3.1
-
-mysqlclient  2.1.0
-
-Pillow       9.0.0
-
-pip          20.2.3
-
-pycparser    2.21
-
-setuptools   49.2.1
-
-sqlparse     0.4.2
-
-tzdata       2021.5
-
+-asgiref      3.4.1
+-cffi         1.15.0
+-cryptography 36.0.1
+-Django       4.0.1
+-jwt          1.3.1
+-mysqlclient  2.1.0
+-Pillow       9.0.0
+-pip          20.2.3
+-pycparser    2.21
+-setuptools   49.2.1
+-sqlparse     0.4.2
+-tzdata       2021.5
 
 # 버전단위 
 - v1 
