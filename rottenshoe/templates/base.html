@@ -14,9 +14,10 @@
 
     <script>
         $.ajaxSetup({
-          headers: { "X-CSRFToken": '{{csrf_token}}' }
+          headers: { "X-Csrftoken": '{{csrf_token}}' }
         });
     </script>
+    
 </head>
 <body>
     <div class = 'top' width = '100%' height = '100px'>
@@ -30,27 +31,11 @@
         <span width = '25%'><a href = "{% url 'rotten:mypage' %}" style = 'text-decoration-line: none'>마이페이지</a></span>
         {% endif %}
     </div>
-<!-- 기본 템플릿 안에 삽입될 내용 Start -->
-<input type = 'text' id = 'search' onkeypress="if(event.keyCode == 13) search()"/>
 {% block content %}
 {% endblock %}
-<!-- 기본 템플릿 안에 삽입될 내용 End -->
 </body>
 <footer width = '100%' height = '150px'>
     <div>제작자 - MOON</div>
     <div>문의 - dandihara@gmail.com</div>
 </footer>
-<script>
-    keyword = document.getElementById('search').text;
-    console.log(keyword);
-
-    function search(){
-        $.ajax({
-            type : 'GET',
-            url : 'search',
-            contentType : 'charset:UTF-8',
-            data : keyword
-        });
-    }
-</script>
 </html>

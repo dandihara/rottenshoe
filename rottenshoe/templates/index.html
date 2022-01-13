@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+    <input type = 'text' id = 'search' onkeypress="if(event.keyCode == 13) search();"/>
     {% if lists %}
         <ul>
             {% for content in lists %}
@@ -11,7 +11,27 @@
     {% else %}
     <p>no data</p>
     {% endif %}
-    
+<script>
+
+    function search(){
+
+        var keyword = document.getElementById('search').value
+
+        $.ajax({
+            type : 'GET',
+            url : 'search/'+ keyword,
+            contentType : 'application/json; charset=utf-8',
+            dataType : 'html',
+            //data : {'q' : keyword},
+            // 얘가 곧 파라미터였음
+
+            success: (res) => {
+                console.log(res)
+                location.href('')
+            }
+        });
+    }
+</script>
 {% endblock %}
 
 

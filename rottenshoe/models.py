@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
@@ -35,12 +36,16 @@ class CustomUserManager(BaseUserManager):
 
 class Sneakers(models.Model):
     sneaker_name = models.CharField(max_length=200)
+    sneaker_name_ko = models.CharField(max_length=200,default='')
     model_number = models.CharField(max_length=30)
     brand = models.CharField(max_length=100)
     price = models.IntegerField()
-    score = models.FloatField(default=0.0)
+    total_count = models.IntegerField(default=0)
+    cop_count = models.IntegerField(default=0)
     thumbnail = models.ImageField(upload_to = '', blank = True)
     retail_date = models.DateField()
+    created_time = models.DateTimeField(default = timezone.now)
+    updated_time = models.DateTimeField(default = timezone.now)
 
     def __str__(self):
         return self.model_number
@@ -54,6 +59,8 @@ class User(AbstractBaseUser):
     nickname = models.CharField(max_length=30, unique=True)
 
     is_staff = models.BooleanField(default=False)
+    created_time = models.DateTimeField(default = timezone.now)
+    updated_time = models.DateTimeField(default = timezone.now)
 
     object = CustomUserManager()
     USERNAME_FIELD = 'email'
@@ -75,6 +82,8 @@ class Comment(models.Model):
     board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)
     user_id = models.ForeignKey(User, on_delete = CASCADE)
     comment = models.TextField()
+    created_time = models.DateTimeField(default = timezone.now)
+    updated_time = models.DateTimeField(default = timezone.now)
 
     class Meta:
         db_table = 'comments'
@@ -83,6 +92,8 @@ class ScoreBoard(models.Model):
     board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)
     user_id = models.ForeignKey(User, on_delete = CASCADE)
     score = models.FloatField()
+    created_time = models.DateTimeField(default = timezone.now)
+    updated_time = models.DateTimeField(default = timezone.now)
 
     class Meta:
         db_table = 'sneakers_score'

@@ -39,6 +39,11 @@ class UserForm(UserCreationForm):
             print("비밀번호 불일치!")
 
 
+class SearchForm(forms.Form):
+    keyword = forms.CharField(label = 'Search Word')
+    
+
+
 
 
 

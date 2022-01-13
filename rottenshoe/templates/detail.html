@@ -20,7 +20,7 @@
         <form>
             {%csrf_token%}
             <input type = 'text' class = 'comment' id = 'comment' accept-charset="UTF-8" onkeypress="if(event.keyCode == 13) comments();"
-                            placeholder=" 이거 어때 ??"/>
+                            placeholder=" 이건 어때 ??"/>
         </form>
         <div>댓글 리스트</div>
         {% for comment in comments %}
@@ -32,6 +32,7 @@
     <script>
 
         function comments(){
+            
             var comment = document.getElementById('comment').value;
             var b_id = document.getElementById('model_number').innerText;
 

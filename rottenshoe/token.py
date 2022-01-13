@@ -3,7 +3,7 @@ import datetime
 
 
 def create_token(nickname,email,id):
-    exp = datetime.datetime.utcnow() + datetime.timedelta(days=7)
+    exp = datetime.datetime.now() + datetime.timedelta(days=7)
     payload = {
         'id' : id,
         'exp' : exp,
@@ -13,4 +13,7 @@ def create_token(nickname,email,id):
     return jwt.encode(payload,"secret_key is me",algorithm = 'HS256')
 
 def decoder(token):
-    return jwt.decode(token,"secret_key is me",algorithm="HS256")
+    data = jwt.decode(token,"secret_key is me", algorithms = "HS256")
+    # if data['exp'] > datetime.datetime.utcnow():
+    #     return {'result' : 'expried token!'}
+    return jwt.decode(token,"secret_key is me",algorithms ="HS256")

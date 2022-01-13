@@ -67,7 +67,7 @@ def login(req):
         if client is not None:
             auth_login(req,client)
             #access_token 발생 => 유저 확인용
-            access_token =  create_token(client.nickname,client.email,client.id).decode('utf-8')
+            access_token =  create_token(client.nickname,client.email,client.id)
             req.session['access_token'] = access_token
             return JsonResponse({'result':'ok', 'access_token' : access_token})
         else:
@@ -129,15 +129,16 @@ def myPage(req):
     pass
 
 
-def search(req):
+def search(req,q):
     result = []
-    word_list = req.GET.get('search').split(" ")
-    print(word_list)
+    word_list = q.split(" ")
     for word in word_list:
         # icontains / contains 차이 대소문자 생각 하고 안 하고 차이
         # 단, SQLite는 LIKE 키워드가 없기에 위의 내용 적용 불가
+        # + 한글로 된 타이틀 / 키워드를 하나의 속성으로 모델에 추가..
+        # .distinct() // 중복객체 제외
         result += list(Sneakers.objects.filter(Q(sneaker_name__icontains = word) | 
-                                                    Q(brand__icontains = word)))
+                                                    Q(brand__icontains = word)).distinct())
     print(result)
-    return(req,'search.html',result)
+    return render(req,'search.html',{'lists':result, 'keyword':q})
 
