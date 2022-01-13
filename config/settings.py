@@ -117,7 +117,7 @@ TIME_ZONE = 'Asia/Seoul'
 USE_I18N = True
 
 USE_L10N = True
-
+# datetime관련
 USE_TZ = False
 
 

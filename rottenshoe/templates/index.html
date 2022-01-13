@@ -3,7 +3,7 @@
 {% block content %}
     <input type = 'text' id = 'search' onkeypress="if(event.keyCode == 13) search();"/>
     {% if lists %}
-        <ul>
+        <ul class = 'container' id = 'container'>
             {% for content in lists %}
             <li><a href="{% url 'rotten:detail' content.id %}">{{ content.sneaker_name }}</a></li>
             {% endfor %}
@@ -16,18 +16,20 @@
     function search(){
 
         var keyword = document.getElementById('search').value
+        const board_list = document.getElementById('m_container')
 
         $.ajax({
             type : 'GET',
             url : 'search/'+ keyword,
             contentType : 'application/json; charset=utf-8',
-            dataType : 'html',
-            //data : {'q' : keyword},
+            // data : {'q' : keyword},
             // 얘가 곧 파라미터였음
 
             success: (res) => {
                 console.log(res)
-                location.href('')
+                $('html').empty()
+                $('html').append(res)
+                
             }
         });
     }

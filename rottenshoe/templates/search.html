@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<input type = 'text' id = 'search' onkeypress="if(event.keyCode == 13) search();"/>
+<div class = 's_container'>  
     {% for s in lists %}
     <div><img src = "{{s.thumbnail.url}}" alt = "thumbnail"/></div>
     <div>{{s.title}}</div>
     <div>{{s.retail_date}}</div>
     <div>{{s.brand}}</div>
     {% endfor %}
-
+</div>
 {% endblock %}

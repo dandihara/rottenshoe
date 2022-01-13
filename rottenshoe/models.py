@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.db.models.deletion import CASCADE
-from django.conf import settings
 
 # user(Ab) / board / like / comment
 # Create your models here.
@@ -98,4 +97,15 @@ class ScoreBoard(models.Model):
     class Meta:
         db_table = 'sneakers_score'
     
+
+class Keyword(models.Model):
+    keyword = models.CharField(max_length=30)
+    sneaker_id = models.ForeignKey(Sneakers,on_delete=CASCADE)
+
+    class Meta:
+        db_table = 'keyword'
+
+
+    def __str__(self):
+        return self.keyword
 

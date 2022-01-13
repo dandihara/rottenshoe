@@ -138,7 +138,10 @@ def search(req,q):
         # + 한글로 된 타이틀 / 키워드를 하나의 속성으로 모델에 추가..
         # .distinct() // 중복객체 제외
         result += list(Sneakers.objects.filter(Q(sneaker_name__icontains = word) | 
-                                                    Q(brand__icontains = word)).distinct())
-    print(result)
-    return render(req,'search.html',{'lists':result, 'keyword':q})
+                                                    Q(brand__icontains = word) |
+                                                    Q(sneaker_name_ko__icontains = word)).distinct())
+        context = {
+            'lists':result, 'keyword':q 
+            }
+    return render(req,'search.html',context)
 
