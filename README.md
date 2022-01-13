@@ -37,7 +37,11 @@ frontend : vanilla js / html+css
 
 # v1 ERD 구상도
 
-![v1 erd](https://user-images.githubusercontent.com/23503161/148891749-fffba11c-bbe0-4f70-b4c9-6581ad9579ab.PNG)
+![v1 erd](https://user-images.githubusercontent.com/23503161/149280799-cf108964-70e6-4664-a306-198bb4357d68.PNG)
+
+
+- Sneakers : ScoreBoard,Comments = 1:N
+- User : ScoreBoard,Comments = 1:N
 
 
 # 고민 리스트
