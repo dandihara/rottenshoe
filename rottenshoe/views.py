@@ -1,3 +1,4 @@
+
 from django.db.models.query_utils import Q
 from django.http import response
 from django.http.response import JsonResponse
@@ -18,7 +19,7 @@ from rottenshoe.token import create_token,decoder
 import json
 import re
 
-from .models import Comment, Sneakers, User
+from .models import Comment, Sneakers, User, Keyword
 
 #req => JsonResponse 객체   
 def index(req):
@@ -132,16 +133,20 @@ def myPage(req):
 def search(req,q):
     result = []
     word_list = q.split(" ")
+    keyword_list = [t.keyword for t in Keyword.objects.all()]
+    
     for word in word_list:
-        # icontains / contains 차이 대소문자 생각 하고 안 하고 차이
-        # 단, SQLite는 LIKE 키워드가 없기에 위의 내용 적용 불가
-        # + 한글로 된 타이틀 / 키워드를 하나의 속성으로 모델에 추가..
-        # .distinct() // 중복객체 제외
+        # keyword에 들어오는 단어 값인 경우, 대부분 단일형의 단어로 들어오기에 바로 반환되도록 처리.
+        if word in keyword_list:
+            model_number_list = list(Keyword.objects.filter(keyword = word))
+            result = [Sneakers.objects.get(model_number = s.sneaker_id)
+                        for s in model_number_list]
+            return render(req,'search.html',{'lists': result, 'keyword' : word})
+        
         result += list(Sneakers.objects.filter(Q(sneaker_name__icontains = word) | 
                                                     Q(brand__icontains = word) |
                                                     Q(sneaker_name_ko__icontains = word)).distinct())
-        context = {
-            'lists':result, 'keyword':q 
-            }
+    context = {'lists':result, 'keyword':q}
+    
     return render(req,'search.html',context)
 
