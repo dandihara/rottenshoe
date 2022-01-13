@@ -37,7 +37,8 @@ frontend : vanilla js / html+css
 
 # v1 ERD 구상도
 
-![v1 erd](https://user-images.githubusercontent.com/23503161/149280799-cf108964-70e6-4664-a306-198bb4357d68.PNG)
+![v1 erd](https://user-images.githubusercontent.com/23503161/149297667-4aa0275b-774e-4d34-8028-6afc615c9441.PNG)
+
 
 
 - Sneakers : ScoreBoard,Comments = 1:N
@@ -56,4 +57,4 @@ frontend : vanilla js / html+css
 - 2안 . 키워드를 스니커즈의 인덱스를 하나의 컬럼으로 하는 테이블 작성 ex > 범고래 / dh2000 - 100(index : 16)
 
 
-=> 방법 : 속성값들을 추가한다 . 문자열로 받아서 icontains 사용 , 키워드를 테이블로 만들경우 조인 발생이 자주 발생하기에 유저 수가 늘어나면 문제가 있을것이라 판단.
+=> 방법 : 속성값들을 추가한다 . 문자열로 받아서 icontains 사용 , 키워드 테이블 생성 감안.
