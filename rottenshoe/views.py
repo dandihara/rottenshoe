@@ -13,6 +13,7 @@ from django.contrib.auth.hashers import make_password
 from django.views.generic import RedirectView
 from django.db.utils import IntegrityError
 
+
 from rottenshoe.forms import BoardForm,UserForm
 from rottenshoe.token import create_token,decoder
 
@@ -24,32 +25,7 @@ from .models import Comment, Sneakers, User, Keyword
 #req => JsonResponse 객체   
 def index(req):
     shoeList = Sneakers.objects.all()
-
     return render(req,'index.html', context = {'lists' : shoeList})
-
-
-def boardPost(req):
-    if req.method == 'GET':
-        form = BoardForm()
-        return render(req,'board.html',{'form':form})
-
-    elif req.method == 'POST':
-        form = BoardForm(req.POST)
-        if form.is_valid():
-            s = Sneakers()
-            s.model_number = req.POST['model_number']
-            s.brand = req.POST['brand']
-            s.thumbnail = req.FILES['thumbnail']
-            s.sneaker_name = req.POST['snaekers_name']
-            s.retail_date = req.POST['retail_date']
-            s.price = req.POST['price']
-
-            s.save()
-            return redirect('/rotten/detail/' + str(s.id))
-        else:
-            form = BoardForm()
-        context = {'form': form}
-        return render(req, 'board.html', context)
 
 
 def detail(req,id):
@@ -58,8 +34,8 @@ def detail(req,id):
         comments = Comment.objects.filter(board_id = id)
         if board is None :
             return redirect('rotten:index')
-        return render(req,'detail.html',{'data' : board, 'comments' : comments})
 
+        return render(req,'detail.html',{'data' : board, 'comments' : comments})
 
 def login(req):
     if req.method == "POST":

@@ -6,7 +6,6 @@ app_name = 'rotten'
 
 urlpatterns = [
     path('', views.index, name = 'index'),
-    path('post/',views.boardPost, name = 'boardPost'),
     path('detail/<int:id>',views.detail, name= 'detail'),
     path('login',views.login, name = 'login'),
     path('logout',views.logout, name = 'logout'),
