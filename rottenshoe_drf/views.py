@@ -61,7 +61,6 @@ class CopOrDropAPIView(APIView):
         s_id = req.data['id']
         u_id = decoder(req.session['access_token'])['id']
         board = get_object_or_404(Sneakers, id = s_id)
-        user = get_object_or_404(User,id=u_id)
         # 평가로직
         board.total_count += 1
         if req.data['cop'] == 1:
@@ -75,6 +74,9 @@ class DetailAPIView(APIView):
     def get(self,req,id):
         target = get_object_or_404(Sneakers,id = id)
         target = SneakerSerializer(target)
+        u_id = decoder(req.session['access_token'])['id']
+        user = get_object_or_404(User,id=u_id)
+        copOrDrop = get_object_or_404(CopOrDrop,board_id = target, user_id = user)
         return Response(target.data)
 
     def post(self,req):

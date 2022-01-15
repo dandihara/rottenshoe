@@ -85,6 +85,10 @@ class Comment(models.Model):
     class Meta:
         db_table = 'comments'
 
+class CopOrDrop(models.Model):
+    user_id = models.ForeignKey(User, on_delete = CASCADE)
+    board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)
+    choice = models.BooleanField()
 class ScoreBoard(models.Model):
     board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)
     user_id = models.ForeignKey(User, on_delete = CASCADE)
