@@ -4,7 +4,9 @@ from rottenshoe_drf.serializer import SneakerSerializer
 from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
 from .models import *
+from .token import *
 
 
 '''
@@ -36,7 +38,17 @@ class LoginAPIVIew(APIView):
 class LogoutAPIView(APIView):
     def post(self,req):
         pass
+class CopOrDropAPIView(APIView):
+    #cop or drop 평가 저장
+    def post(self,req):
+        s_id = req.data['id']
+        board = get_object_or_404(Sneakers, id = s_id)
+        board.total_count += 1
 
+        if req.data['cop'] == 1:
+            board.cop_count += 1
+
+        board.save()
 class DetailAPIView(APIView):
     def get(self,req,id):
         target = get_object_or_404(Sneakers,id = id)
@@ -45,7 +57,16 @@ class DetailAPIView(APIView):
 
     def post(self,req):
         s_id = req.data['id']
+        board = get_object_or_404(Sneakers,id = s_id)
+
+        token = req.session['access_token']
+        token = decoder(token)
+        user = get_object_or_404(User, id = token['id'])
+
         comment = req.data['comment']
+
         Comment(
-            s_id,
-        )
+            board_id = board,
+            user_id = user,
+            comment = comment
+        ).save()
