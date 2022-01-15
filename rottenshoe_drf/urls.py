@@ -13,5 +13,6 @@ urlpatterns = [
     path("",views.IndexAPIView.as_view()),
     path("detail/<int:id>",views.DetailAPIView.as_view()),
     path("login",views.LoginAPIVIew.as_view()),
-
+    path("logout",views.LogoutAPIView.as_view()),
+    path("cop",views.CopOrDropAPIView.as_view())
 ]

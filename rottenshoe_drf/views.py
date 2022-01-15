@@ -25,14 +25,15 @@ import json
 class IndexAPIView(APIView):
     def get(self,req):
         newList = Sneakers.objects.all().order_by('-retail_date') # 출시일순 - 최신순
-        hotList = Sneakers.objects.all().order_by('-cop_count') # 점수순
+        hotList = Sneakers.objects.all().order_by('-cop_count') # 점수순 => order_by 이용하려면 속성값 하나 추가 ?
         newList = SneakerSerializer(newList, many = True)
         hotList = SneakerSerializer(hotList, many = True)
 
-        data = {
-            'newList' : newList,
-            'hotList' : hotList
-        }
+        if req.data['mode'] == 'newFull':
+            return Response(newList.data,200)
+        elif req.data['mode'] == 'hotFull':
+            return Response(newList.data,200)
+
         # 더보기 클릭 시 전체 리스트 전송(newList, hotList 따로 운용)
         return Response([newList.data[:5],hotList.data[:5]], 200)
 
@@ -58,8 +59,10 @@ class CopOrDropAPIView(APIView):
 
         if req.data['cop'] == 1:
             board.cop_count += 1
-
+        
+        board.cop_percent = board.cop_count / board.total_count
         board.save()
+
 class DetailAPIView(APIView):
     def get(self,req,id):
         target = get_object_or_404(Sneakers,id = id)

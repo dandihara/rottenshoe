@@ -62,6 +62,7 @@ class Sneakers(models.Model):
     price = models.IntegerField()
     total_count = models.IntegerField(default=0)
     cop_count = models.IntegerField(default=0)
+    cop_percent = models.FloatField(default=0)
     thumbnail = models.ImageField(upload_to = '', blank = True)
     retail_date = models.DateField()
     created_time = models.DateTimeField(default = timezone.now)
