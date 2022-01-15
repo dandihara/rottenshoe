@@ -1,12 +1,17 @@
 from django.shortcuts import get_object_or_404
-from rottenshoe_drf import serializer
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import authenticate
+
 from rottenshoe_drf.serializer import SneakerSerializer
-from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import *
 from .token import *
+
+import json
 
 
 '''
@@ -33,11 +38,17 @@ class IndexAPIView(APIView):
 
 class LoginAPIVIew(APIView):
     def post(self,req):
-        pass
+        data = json.loads(req.body.decode('utf-8'))
+        client = authenticate(email = data['email'], password = data['password'])
+        if client is not None:
+            auth_login(req,client)
+            access_token =  create_token(client.nickname,client.email,client.id)
+            req.session['access_token'] = access_token
 
 class LogoutAPIView(APIView):
     def post(self,req):
-        pass
+        auth_logout(req)
+
 class CopOrDropAPIView(APIView):
     #cop or drop 평가 저장
     def post(self,req):
