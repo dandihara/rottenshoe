@@ -4,9 +4,6 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.db.models.deletion import CASCADE
 
-# user(Ab) / board / like / comment
-# Create your models here.
-
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, nickname, password=None):
@@ -32,27 +29,6 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
-class Sneakers(models.Model):
-    sneaker_name = models.CharField(max_length=200)
-    sneaker_name_ko = models.CharField(max_length=200,default='')
-    model_number = models.CharField(max_length=30)
-    brand = models.CharField(max_length=100)
-    price = models.IntegerField()
-    total_count = models.IntegerField(default=0)
-    cop_count = models.IntegerField(default=0)
-    thumbnail = models.ImageField(upload_to = '', blank = True)
-    retail_date = models.DateField()
-    created_time = models.DateTimeField(default = timezone.now)
-    updated_time = models.DateTimeField(default = timezone.now)
-
-    def __str__(self):
-        return self.model_number
-
-    class Meta:
-        db_table = 'sneakers'
-
-
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
     nickname = models.CharField(max_length=30, unique=True)
@@ -76,6 +52,27 @@ class User(AbstractBaseUser):
 
     class Meta:
         db_table = 'User'
+
+
+class Sneakers(models.Model):
+    sneaker_name = models.CharField(max_length=200)
+    sneaker_name_ko = models.CharField(max_length=200,default='')
+    model_number = models.CharField(max_length=30)
+    brand = models.CharField(max_length=100)
+    price = models.IntegerField()
+    total_count = models.IntegerField(default=0)
+    cop_count = models.IntegerField(default=0)
+    thumbnail = models.ImageField(upload_to = '', blank = True)
+    retail_date = models.DateField()
+    created_time = models.DateTimeField(default = timezone.now)
+    updated_time = models.DateTimeField(default = timezone.now)
+
+    def __str__(self):
+        return self.model_number
+
+    class Meta:
+        db_table = 'sneakers'
+
 
 class Comment(models.Model):
     board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)

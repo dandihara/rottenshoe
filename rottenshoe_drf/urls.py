@@ -1,13 +1,17 @@
-from django.urls import path,re_path
+
+from django.urls import path,include
 from . import views
 
+#drf router
+from rest_framework.routers import DefaultRouter
+
+# router = DefaultRouter()
+# router.register(r'index',views.IndexViewSet,basename='index')
 app_name ='rottenshoe_drf'
 
 urlpatterns = [
-    path('', views.index, name = 'index'),
-    # path('detail/<int:id>',views.detail, name= 'detail'),
-    # path('register',views.register, name = 'register'),
-    # path('detail/comment' , views.comment,name = 'comment'),
-    # path('mypage',views.myPage,name='mypage'),
-    # path('search/<str:q>',views.search, name = 'search'),
+    path("",views.IndexAPIView.as_view()),
+    path("detail/<int:id>",views.DetailAPIView.as_view()),
+    path("login",views.LoginAPIVIew.as_view()),
+
 ]
