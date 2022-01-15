@@ -41,7 +41,7 @@ frontend : vanilla js / html+css
 # v1 ERD 구상도
 
 
-![v1 erd](https://user-images.githubusercontent.com/23503161/149629613-25a16e9b-9981-4e37-a9da-010f32d2b2d9.PNG)
+![v1 erd](https://user-images.githubusercontent.com/23503161/149629794-0751574a-2cd1-4b54-b6ac-e0ee4960176d.PNG)
 
 
 
