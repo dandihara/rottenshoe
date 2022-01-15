@@ -41,7 +41,7 @@ frontend : vanilla js / html+css
 # v1 ERD 구상도
 
 
-![v1 erd](https://user-images.githubusercontent.com/23503161/149629613-25a16e9b-9981-4e37-a9da-010f32d2b2d9.PNG)
+![v1 erd](https://user-images.githubusercontent.com/23503161/149629794-0751574a-2cd1-4b54-b6ac-e0ee4960176d.PNG)
 
 
 
@@ -72,4 +72,5 @@ frontend : vanilla js / html+css
  - 아니면 url를 따로 주어야 더 좋을것인가 ?? 
  
  - 생각하는 방향의 1순위는 코드의 가시성을 우선적으로 보려고 함.사용자 입장에선 큰 차이가 있지 않을 것이라 판단하여 그렇다.
- - 유저 평가 테이블 (CopOrDrop) 
+ - 평가 테이블 (CopOrDrop) 추가
+ - Sneakers 테이블 속성값 추가(cop_percent) 
