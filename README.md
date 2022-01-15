@@ -41,13 +41,14 @@ frontend : vanilla js / html+css
 # v1 ERD 구상도
 
 
+![v1 erd](https://user-images.githubusercontent.com/23503161/149629613-25a16e9b-9981-4e37-a9da-010f32d2b2d9.PNG)
 
-![v1 erd](https://user-images.githubusercontent.com/23503161/149322145-2cc8da7e-0461-45a0-9d82-ce6143749528.PNG)
 
 
-- Sneakers : ScoreBoard,Comments = 1:N
-- User : ScoreBoard,Comments = 1:N
+- Sneakers : ScoreBoard,Comments,CopOrDrop = 1:N
+- User : ScoreBoard,Comments,CopOrDrop = 1:N
 - Sneakers : Keyword = 1:N
+
 
 # 고민 리스트
 
@@ -71,3 +72,4 @@ frontend : vanilla js / html+css
  - 아니면 url를 따로 주어야 더 좋을것인가 ?? 
  
  - 생각하는 방향의 1순위는 코드의 가시성을 우선적으로 보려고 함.사용자 입장에선 큰 차이가 있지 않을 것이라 판단하여 그렇다.
+ - 유저 평가 테이블 (CopOrDrop) 
