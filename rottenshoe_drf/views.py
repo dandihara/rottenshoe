@@ -30,7 +30,7 @@ class IndexAPIView(APIView):
         hotList = Sneakers.objects.all().order_by('-cop_percent') # 점수순 => order_by 이용하려면 속성값 하나 추가 ?
         newList = IndexSerializer(newList, many = True)
         hotList = IndexSerializer(hotList, many = True)
-        return Response([newList.data[:5],hotList.data[:5]], 200)
+        return Response({'newList' : newList.data[:5],'hotList':hotList.data[:5]}, 200)
 
 #더보기 작업 분할
 class ListAPIView(APIView):
@@ -76,8 +76,13 @@ class DetailAPIView(APIView):
         target = SneakerSerializer(target)
         u_id = decoder(req.session['access_token'])['id']
         user = get_object_or_404(User,id=u_id)
-        copOrDrop = get_object_or_404(CopOrDrop,board_id = target, user_id = user)
-        return Response(target.data)
+        
+        try:
+            user_ev = CopOrDrop.object.get(user_id = user, board_id = target)
+        except CopOrDrop.DoesNotExist:
+            user_ev = None
+        
+        return Response({'board': target.data,'evaluate':user_ev})
 
     def post(self,req):
         s_id = req.data['id']
