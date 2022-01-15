@@ -23,7 +23,7 @@
 2) 유저 평가 (댓글, 점수)
 =>![drf](https://user-images.githubusercontent.com/23503161/149620668-7c956ab1-326b-4081-a618-45e60b809856.PNG)
  app 추가 (DRF) / 화면단을 내부에서 따로 주는 것만 하다가 백과 화면단을 따로 구현하기 위하여 Django Rest Framework를 이용한 백에 집중하도록 api url 을 이용하여 따로 만들기 시작
- drf 사용이유 : 일반적으로 테스트 시 postman을 사용하는 것을 좀 더 편리하게 윗 그림처럼 api를 제작하면 알아서 데이터를 읽어오는 것을 확인 할 수 있기에, 그리고 serializer가 있으므로 
+ - drf 사용이유 : 일반적으로 테스트 시 postman을 사용하는 것을 좀 더 편리하게 윗 그림처럼 api를 제작하면 알아서 데이터를 읽어오는 것을 확인 할 수 있기에, 그리고 serializer가 있으므로 
  json형식을 더 일반 django보다 간편하게 구현할 수 있기에 코드가 단축 가능
 - v2
 1) 룩북 페이지(sns)
