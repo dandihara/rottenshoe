@@ -1,5 +1,5 @@
 
-from django.urls import path,include
+from django.urls import path,include,re_path
 from . import views
 
 #drf router
@@ -11,6 +11,7 @@ app_name ='rottenshoe_drf'
 
 urlpatterns = [
     path("",views.IndexAPIView.as_view()),
+    path("<str:mode>",views.ListAPIView.as_view()),
     path("detail/<int:id>",views.DetailAPIView.as_view()),
     path("login",views.LoginAPIVIew.as_view()),
     path("logout",views.LogoutAPIView.as_view()),
