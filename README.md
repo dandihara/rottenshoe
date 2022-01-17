@@ -3,19 +3,59 @@
 -> 로튼토마토를 모티브로 만든 서비스입니다. 
   신발을 보고 이것의 대한 각자의 평론을 하며 현재 뜨는 아이템이 무엇인지 판단 내릴 수 있고, 신발을 이용한 패션 코디등을 서로에게 보여주며 스니커즈 씬 전문 커뮤니티를 만들고자 하였습니다.
 
-# require.txt
-- asgiref      3.4.1
-- cffi         1.15.0
-- cryptography 36.0.1
-- Django       4.0.1
-- PyJWT        2.3.0
-- mysqlclient  2.1.0
-- Pillow       9.0.0
-- pip          20.2.3
-- pycparser    2.21
-- setuptools   49.2.1
-- sqlparse     0.4.2
-- tzdata       2021.5
+# requirement.txt
+-asgiref==3.4.1
+
+-certifi==2021.10.8
+
+-cffi==1.15.0
+
+-charset-normalizer==2.0.10
+
+-cryptography==36.0.1
+
+-defusedxml==0.7.1
+
+-Django==4.0.1
+
+-django-allauth==0.47.0
+
+-django-cors-headers==3.11.0
+
+-django-rest-auth==0.9.5
+
+-djangorestframework==3.13.1
+
+-djangorestframework-simplejwt==5.0.0
+
+-idna==3.3
+
+-mysqlclient==2.1.0
+
+-oauthlib==3.1.1
+
+-Pillow==9.0.0
+
+-pycparser==2.21
+
+-PyJWT==2.3.0
+
+-python3-openid==3.2.0
+
+-pytz==2021.3
+
+-requests==2.27.1
+
+-requests-oauthlib==1.3.0
+
+-six==1.16.0
+
+-sqlparse==0.4.2
+
+-tzdata==2021.5
+
+-urllib3==1.26.8
+
 
 # 버전별 목표
 - v1 
