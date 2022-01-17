@@ -18,10 +18,9 @@ from django.urls import path
 from django.urls.conf import include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from rottenshoe_drf.views import *
 #jwt
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
 
@@ -29,8 +28,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('rottenshoe.urls')),
     path('api/',include('rottenshoe_drf.urls')),
-    path('api/token/',TokenObtainPairView.as_view(),name='token_obtain_pair'),
-    path('api/token/refresh/',TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/obtain/',ObtainTokenPairWithNickname.as_view(),name='token_obtain_pair'),
+    path('token/refresh/',TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 if settings.DEBUG:

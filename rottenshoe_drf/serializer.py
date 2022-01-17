@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Sneakers,User
 
 #스니커즈 데이터 화면에 따른 분할
@@ -20,17 +20,31 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
-class UserLoginSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length = 200)
-    passowrd = serializers.CharField(max_length = 200, write_only = True)
-    token = serializers.CharField(max_length = 255, read_only = True)
-
-    def validate(self, data):
-        email = data.get('email')
-        password = data.get('password')
-
-        user = authenticate(email = email)
-
-        if user is None:
-            return {'Response' : email + "로 가입한 이력이 없습니다."}
         
+#jwt 변형 토큰 생성
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super(MyTokenObtainPairSerializer, cls).get_token(user)
+
+        token['nickname'] = user.nickname
+        return token
+
+# 회원가입
+# pop으로 바로 들어갈 아이템만 남기고 처리.
+class CreateUserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+    nickname = serializers.CharField()
+    password = serializers.CharField(min_length = 8)
+
+    class Meta:
+        model = User
+        fields = ('email','nickname','password')
+    #pop은 말 그대로 pop. validated_data에서 가져오면서 그 부분은 제거됨.
+    def create(self, validated_data):
+        password = validated_data.pop('password',None)
+        instance = self.Meta.model(**validated_data)
+        if password is not None:
+            instance.set_password(password)
+        instance.save()
+        return instance

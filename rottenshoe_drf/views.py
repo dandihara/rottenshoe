@@ -4,15 +4,12 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
-from django.contrib.auth import authenticate
-from django.contrib.auth.hashers import make_password
 
-from rottenshoe_drf.serializer import SneakerSerializer,IndexSerializer, UserSerializer
-
+from rottenshoe_drf.serializer import MyTokenObtainPairSerializer, SneakerSerializer,IndexSerializer, CreateUserSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import permissions,status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
 from .models import *
 from .token import *
 
@@ -24,6 +21,7 @@ import re
 2)상세페이지
 3)로그인, 로그아웃
 4)댓글 작성
+5)회원가입
 
 '''
 
@@ -109,31 +107,27 @@ class DetailAPIView(APIView):
 
 
 
+
+
 class RegisterAPIView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
     def post(self,req):
+        if req.data['password'] == req.data['confirm_password']:
+            serializer = CreateUserSerializer(data=req.data)
+            if serializer.is_valid():
+                user = serializer.save()
+                if user:
+                    json = serializer.data
+                    return Response(json,status=status.HTTP_201_CREATED)
 
-        regEmail = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-        if not re.search(regEmail,req.data['email']):
-            return JsonResponse({'Response' : '이메일 형식이 아닙니다.'})
-
-        if req.data['password'] != req.data['confirm_password']:
-            return JsonResponse({'Response' : '비밀번호와 확인 비밀번호가 일치하지 않습니다.'})
+            return Response(serializer.erros,status=status.HTTP_400_BAD_REQUEST)
         else:
-            hashed_password = make_password(req.data['password'])
-            try:
-                newUser = User(
-                    email = req.data['email'],
-                    password = hashed_password,
-                    nickname = req.data['nickname']
-                )
-                newUser.save()
-                user_info = {
-                            'email':req.data['email'],
-                            'user_id' : newUser.id,
-                            'nickname' : req.data['nickname']
-                }
-                return Response({
-                                'response': 'ok', 
-                                'user_info' : user_info})
-            except IntegrityError:
-                return JsonResponse({'Response' : '이미 가입 된 이메일입니다.'})
+            return Response({'error' : '비밀번호와 확인 비밀번호가 일치하지 않습니다.'})
+
+
+
+class ObtainTokenPairWithNickname(TokenObtainPairView):
+    permission_classes = (permissions.AllowAny,)
+
+    serializer_class = MyTokenObtainPairSerializer
