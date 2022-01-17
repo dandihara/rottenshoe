@@ -1,3 +1,6 @@
 /settings.py
-
-../rottenshoe_env/
+media
+__pycache__/
+db.sqlite3
+##가상환경
+rottenshoe_env
