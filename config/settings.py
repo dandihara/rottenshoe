@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import datetime
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,10 +42,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    #apps
     'rottenshoe',
     'rottenshoe_drf',
+    #3rd party
     'corsheaders',
     'rest_framework',
+    # 'rest_framework.authtoken',
+    # 'allauth',
+    # 'allauth.account',
+    # 'rest_auth.registration',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # cors 미들웨어
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -153,3 +163,23 @@ AUTH_USER_MODEL = 'rottenshoe.User'
 # 실 배포 전에 꼭 고칠 것 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+REST_FRAMEWORK = { 
+    'DEFAULT_AUTHENTICATION_CLASSES': 
+         [ 
+             'rest_framework_simplejwt.authentication.JWTAuthentication',
+         ],
+    'DEFAULT_PERMISSION_CLASSES': 
+        [
+            'rest_framework.permissions.AllowAny',
+        ],
+    }
+
+#JWT
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=10), # Access-Token 만료시간
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(hours=12), # Refresh Token의 만료시간
+    'AUTH_HEADER_TYPES' : ('Bearer',),
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+}
