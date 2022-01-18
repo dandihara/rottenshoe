@@ -80,9 +80,9 @@ frontend : vanilla js / html+css
 
 
 # v1 ERD 구상도
+https://www.erdcloud.com/d/vY5yNp9JGZtmAvwsM
 
 
-![v1 erd](https://user-images.githubusercontent.com/23503161/149629794-0751574a-2cd1-4b54-b6ac-e0ee4960176d.PNG)
 
 
 
@@ -127,7 +127,7 @@ frontend : vanilla js / html+css
                 body{ 
                   email, password 
                   }
-                  
+
 - "token/refresh" => jwt token 만료(Unauthorized or 401 error) 토큰 재반환 요청[POST]
                   body {
                     refresh : refresh_token
@@ -162,3 +162,5 @@ frontend : vanilla js / html+css
 21-01-16
   - 핫하다는 컨텐츠를 어떻게 구할 것인가 ? 조회수 값을 추가해볼 생각. detail에서 유저가 들어온다면 조회수가 늘어나도록 동기 ? 비동기처리 ??
 
+21-01-18
+  - 일단 조회수는 동기로 처리하고 유저의 성향을 분석하기 위한 데이터 테이블 추가하게 됨(게시판 접근 시 저장) 시간과 어떤 게시판인지 저장되어 유저의 성향을 분석할 수 있을 듯.
