@@ -13,8 +13,6 @@ urlpatterns = [
     path("",views.IndexAPIView.as_view(),name = 'main'),
     path("<str:mode>",views.ListAPIView.as_view(),name = 'main-option'),
     path("detail/<int:id>",views.DetailAPIView.as_view()),
-    path("login/",views.LoginAPIVIew.as_view()),
-    path("logout/",views.LogoutAPIView.as_view()),
     path("cop/",views.CopOrDropAPIView.as_view()),
     path("register/",views.RegisterAPIView.as_view(), name = 'register'),
 ]

@@ -28,6 +28,7 @@ import re
         
 #hotList 정렬 키워드 고안 필수
 class IndexAPIView(APIView):
+    permission_classes = (permissions.AllowAny,)
     def get(self,req):
         newList = Sneakers.objects.all().order_by('-retail_date') # 출시일순 - 최신순
         hotList = Sneakers.objects.all().order_by('-cop_percent') # 점수순 => order_by 이용하려면 속성값 하나 추가 ?
@@ -37,30 +38,14 @@ class IndexAPIView(APIView):
 
 #더보기 작업 분할
 class ListAPIView(APIView):
+    permission_classes = (permissions.AllowAny,)
     def get(self,req,mode):
-        if mode == 'newFull':
+        if mode == 'new':
             newList = SneakerSerializer(Sneakers.objects.all().order_by('-retail_date'), many = True)
             return Response(newList.data,200)
-        elif mode == 'hotFull':
+        elif mode == 'hot':
             hotList = SneakerSerializer(Sneakers.objects.all().order_by('-cop_percent'), many = True)
             return Response(hotList.data,200)
-
-class LoginAPIVIew(APIView):
-    def post(self,req):
-        email = req.data['email']
-        password = req.data['password']
-
-        user = User.objects.get(email = email)
-
-        if user is None:
-            raise AuthenticationError('존재하지 않는 이메일입니다.')
-        
-        if not user.check_password(password):
-            raise AuthenticationError('비밀번호가 다릅니다.')
-
-class LogoutAPIView(APIView):
-    def post(self,req):
-        auth_logout(req)
 
 class CopOrDropAPIView(APIView):
     #cop or drop 평가 저장
@@ -106,12 +91,8 @@ class DetailAPIView(APIView):
         ).save()
 
 
-
-
-
 class RegisterAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
-
     def post(self,req):
         if req.data['password'] == req.data['confirm_password']:
             serializer = CreateUserSerializer(data=req.data)

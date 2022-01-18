@@ -1,7 +1,7 @@
 # rottenshoe
 
 -> 로튼토마토를 모티브로 만든 서비스입니다. 
-  신발을 보고 이것의 대한 각자의 평론을 하며 현재 뜨는 아이템이 무엇인지 판단 내릴 수 있고, 신발을 이용한 패션 코디등을 서로에게 보여주며 스니커즈 씬 전문 커뮤니티를 만들고자 하였습니다.
+  신발을 보고 이 아이템의 대한 각자의 생각을 작성하여, 현재 뜨는 아이템이 무엇인지 판단 내릴 수 있고, 신발을 이용한 패션 코디사진을 서로에게 보여 줄 수 있는 스니커즈 씬 전문 커뮤니티를 만들고자 하였습니다.
 
 # requirement.txt
 -asgiref==3.4.1
@@ -89,6 +89,32 @@ frontend : vanilla js / html+css
 - Sneakers : ScoreBoard,Comments,CopOrDrop = 1:N
 - User : ScoreBoard,Comments,CopOrDrop = 1:N
 - Sneakers : Keyword = 1:N
+
+- 키워드 테이블을 따로 둔 이유 :
+  #선택지 
+  - 1) 신발 테이블(Snaeker)에 속성값으로 둔다. 
+  - 2) 테이블을 따로 두어서 관리한다.
+
+  간단하게만 생각하면 테이블에 엮어서 쓰는 걸 생각했으나 기본으로 돌아가 생각해본 결과는 2번이었다.
+  1번으로 갈 경우, 제일 기본적인 제1정규형을 범할 수가 있기에 그랬다.
+
+ 2번으로 선택하고 나서 생각한 것은 검색을 요청하는 방향이었다. 일반적인 모델명을 한글로 하는 키워드는 현재 신발 속성값 중 한글 타이틀과 icontains를 사용하여 접근하는 것이 디비 요청 수가 적다고 생각됐지만, 특별 키워드는 말 그대로 별칭같은 것이기에 생길때마다 운영자가 따로 처리하는 것이 맞다고 판단되어 다음과 같이 테이블을 따로 구현 해 두었다.
+
+
+# URL(api)
+
+- "api/" => 메인페이지 [GET]
+- "api/(options)" => 메인페이지 확장형
+                      [GET] options => hot or new (키워드에 따른 리스트 변동)
+- "api/detail/(s_id)" => 상세페이지
+- "api/register => 회원가입 [POST]
+                    body {
+                      email, password, confirme_password, nickname
+                    }
+- "token/obtain" => jwt token 요청 및 생성 [POST] 
+                body{ 
+                  email, password 
+                  }
 
 
 # 고민 리스트
