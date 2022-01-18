@@ -177,7 +177,7 @@ REST_FRAMEWORK = {
 
 #JWT
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=10), # Access-Token 만료시간
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=30), # Access-Token 만료시간
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(hours=12), # Refresh Token의 만료시간
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,

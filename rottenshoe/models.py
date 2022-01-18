@@ -2,8 +2,9 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
-from django.db.models.deletion import CASCADE
 
+
+import datetime
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, nickname, password=None):
@@ -67,17 +68,23 @@ class Sneakers(models.Model):
     retail_date = models.DateField()
     created_time = models.DateTimeField(default = timezone.now)
     updated_time = models.DateTimeField(default = timezone.now)
+    views = models.PositiveIntegerField(default=0,verbose_name='조회수') # 음수제거
 
     def __str__(self):
         return self.model_number
+
+    @property
+    def update_view_count(self):
+        self.views = self.views + 1
+        self.save()
 
     class Meta:
         db_table = 'sneakers'
 
 
 class Comment(models.Model):
-    board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)
-    user_id = models.ForeignKey(User, on_delete = CASCADE)
+    board_id  = models.ForeignKey(Sneakers, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     comment = models.TextField()
     created_time = models.DateTimeField(default = timezone.now)
     updated_time = models.DateTimeField(default = timezone.now)
@@ -86,12 +93,16 @@ class Comment(models.Model):
         db_table = 'comments'
 
 class CopOrDrop(models.Model):
-    user_id = models.ForeignKey(User, on_delete = CASCADE)
-    board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)
+    user_id = models.ForeignKey(User, on_delete = models.PROTECT)
+    board_id  = models.ForeignKey(Sneakers, on_delete=models.CASCADE)
     choice = models.BooleanField()
+
+    class Meta:
+        db_table = 'CopTable'
+
 class ScoreBoard(models.Model):
-    board_id  = models.ForeignKey(Sneakers, on_delete=CASCADE)
-    user_id = models.ForeignKey(User, on_delete = CASCADE)
+    board_id  = models.ForeignKey(Sneakers, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     score = models.FloatField()
     created_time = models.DateTimeField(default = timezone.now)
     updated_time = models.DateTimeField(default = timezone.now)
@@ -102,7 +113,7 @@ class ScoreBoard(models.Model):
 
 class Keyword(models.Model):
     keyword = models.CharField(max_length=30)
-    sneaker_id = models.ForeignKey(Sneakers,on_delete=CASCADE)
+    sneaker_id = models.ForeignKey(Sneakers,on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'keyword'
@@ -111,3 +122,11 @@ class Keyword(models.Model):
     def __str__(self):
         return self.keyword
 
+
+class UserMovementOfViews(models.Model):
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    sneaker_id = models.ForeignKey(Sneakers,on_delete=models.CASCADE)
+    movement_time = models.DateTimeField(default=datetime.datetime.now())
+
+    class Meta:
+        db_table = 'user_movements_of_views'

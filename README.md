@@ -104,16 +104,33 @@ frontend : vanilla js / html+css
 # URL(api)
 
 - "api/" => 메인페이지 [GET]
+
 - "api/(options)" => 메인페이지 확장형
-                      [GET] options => hot or new (키워드에 따른 리스트 변동)
+                      [GET] category => hot or new (키워드에 따른 리스트 변동)
+
 - "api/detail/(s_id)" => 상세페이지
+                      [GET] id => 신발 데이터 인덱스
+
 - "api/register => 회원가입 [POST]
                     body {
                       email, password, confirme_password, nickname
                     }
+
+- "api/cop/ => 평가 url [POST]
+                    headers = { Access-Token : "access-token"}
+                    body{
+                      id = 게시판 id(신발 index),
+                      cop = 선택지(boolean)
+                    }
+
 - "token/obtain" => jwt token 요청 및 생성 [POST] 
                 body{ 
                   email, password 
+                  }
+                  
+- "token/refresh" => jwt token 만료(Unauthorized or 401 error) 토큰 재반환 요청[POST]
+                  body {
+                    refresh : refresh_token
                   }
 
 

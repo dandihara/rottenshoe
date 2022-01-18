@@ -1,5 +1,4 @@
 import jwt
-import datetime
 from django.conf import settings
 
 def decoder(token):
