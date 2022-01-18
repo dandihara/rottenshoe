@@ -1,7 +1,9 @@
-/settings.py
-media
-__pycache__/
+*.pyc
+*~
+__pycache__
+myvenv
 db.sqlite3
+/static
 
 ##가상환경
 rottenshoe_env/
@@ -9,8 +11,3 @@ rottenshoe_env/
 ##pychche 제거
 rottenshoe/__pycache__/
 rottenshoe_drf/__pycache__/
-
-##마이그레이션 및 미디어 제거
-rottenshoe_drf/migrations/
-rottenshoe/migrations/
-
