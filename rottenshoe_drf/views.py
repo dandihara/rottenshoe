@@ -16,7 +16,7 @@ import logging
 3)로그인, 로그아웃 - jwt 사용
 4)댓글 작성
 5)회원가입
-6)평가 Cop or Drop
+6)평가 (Cop or Drop)
 
 '''
 

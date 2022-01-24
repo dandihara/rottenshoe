@@ -11,3 +11,6 @@ rottenshoe_env/
 ##pychche 제거
 rottenshoe/__pycache__/
 rottenshoe_drf/__pycache__/
+
+
+README.md
