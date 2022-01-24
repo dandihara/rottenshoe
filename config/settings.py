@@ -43,7 +43,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['119.64.249.97',
                 '127.0.0.1',
                 'localhost',
-                '54.180.205.170']
+                'ec2-54-180-205-170.ap-northeast-2.compute.amazonaws.com/']
 
 
 # Application definition
