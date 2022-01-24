@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from .models import *
 from .token import *
 
+import logging
+
 '''
 1)메인페이지
 2)상세페이지

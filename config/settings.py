@@ -43,16 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'allauth',
+    'allauth.account',
     #apps
     'rottenshoe',
     'rottenshoe_drf',
     #3rd party
     'corsheaders',
     'rest_framework',
-    # 'rest_framework.authtoken',
-    # 'allauth',
-    # 'allauth.account',
-    # 'rest_auth.registration',
     'rest_framework_simplejwt',
 ]
 
@@ -94,12 +92,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rottenshoe',
-        'USER' : 'root',
-        'PASSWORD' : '0000',
-        'HOST' : 'localhost', 
-        'PORT' : '3306'
-
+        'HOST' : 'database-1.cluster-cvt846kbv1ju.ap-northeast-2.rds.amazonaws.com',
+        'NAME': 'rottenshoedb',
+        'USER' : 'dandihara',
+        'PASSWORD' : 'entks0725',
+        'PORT' : '3306',
+        'OPTIONS': {'charset':'utf8mb4'}
     }
 }
 
