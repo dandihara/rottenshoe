@@ -41,8 +41,10 @@ SECRET_KEY = get_secret("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = [
-                "localhost",
-                ".ec2-54-180-205-170.ap-northeast-2.compute.amazonaws.com"]
+                # "localhost",
+                # ".ec2-54-180-205-170.ap-northeast-2.compute.amazonaws.com"
+                "*"
+                ]
 
 
 # Application definition
