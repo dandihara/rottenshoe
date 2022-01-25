@@ -14,7 +14,7 @@ class KeywordAdmin(admin.ModelAdmin):
 
 class UserAdmin(admin.ModelAdmin):
     search_fields = ['email','nickname']
-    list_display = ('email','nickname','created_time','update_time')
+    list_display = ('email','nickname','created_time','updated_time')
 
 admin.site.register(Sneakers,SneakerAdmin)
 admin.site.register(Keyword,KeywordAdmin)
