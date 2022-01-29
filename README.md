@@ -165,3 +165,8 @@ frontend : vanilla js / html+css
 21-01-23
   - 검색 로직 확인 -> 크림과 비슷한 면이 있으나 다른 점이 발견 / 현재 띄어쓰기 기준으로 키워드를 끊어 데이터를 가져오는데 띄어쓰기가 들어간 키워드도 있음을 발견.
 
+21-01-27
+  - swagger 코드 추가 -> 명세서 제작 편의성을 위해서 제작 
+  - ![swagger 추가](https://user-images.githubusercontent.com/23503161/151375595-782cd4a2-44d3-4b73-9d93-094d917a23d2.PNG)
+
+
