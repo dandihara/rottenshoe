@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from rottenshoe_drf.serializer import CoD_Serializer, MyTokenObtainPairSerializer, SneakerSerializer,IndexSerializer, CreateUserSerializer,CommentSerializer
+from rottenshoe_drf.serializer import CoD_Serializer, MyPageSerializer, MyTokenObtainPairSerializer, SneakerSerializer,IndexSerializer, CreateUserSerializer,CommentSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import permissions,status
 from rest_framework.views import APIView
@@ -10,16 +10,15 @@ from .models import *
 from .token import *
 
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-
+from django.contrib.auth.hashers import make_password
 '''
 1)메인페이지
 2)상세페이지
 3)로그인, 로그아웃 - jwt 사용
-4)댓글 작성
+4)댓글 작성 및 관리(삭제,수정)
 5)회원가입
 6)평가 (Cop or Drop)
-
+7)마이페이지 요청 및 회원 정보 수정
 '''
 
 
@@ -54,8 +53,8 @@ class ListAPIView(APIView):
 
 class CommentAPIView(APIView):
     @swagger_auto_schema(
-        operation_description="댓글 추가 및 관리(삭제, 수정)",
-        tags = ['comments'],
+        operation_description="댓글 추가",
+        tags = ['comment'],
         request_body=CommentSerializer
     )
     def post(self,req):
@@ -76,6 +75,11 @@ class CommentAPIView(APIView):
         return Response(None,status = status.HTTP_202_ACCEPTED)
 
     #댓글 수정(update)
+    @swagger_auto_schema(
+        operation_description="댓글 수정",
+        tags = ['comment'],
+        request_body=CommentSerializer
+    )
     def put(self,req):
         
         board_id = req.data['board_id']
@@ -90,6 +94,11 @@ class CommentAPIView(APIView):
         return Response(None,status=status.HTTP_202_ACCEPTED)
     
     #댓글 삭제(delete)
+    @swagger_auto_schema(
+        operation_description="댓글 삭제",
+        tags = ['comment'],
+        request_body=CommentSerializer
+    )
     def delete(self,req):
         board_id = req.data['board_id']
         u_id = decoder(req.headers['Access-Token'])['user_id']
@@ -114,19 +123,21 @@ class RegisterAPIView(APIView):
     )
     def post(self,req):
         if req.data['password'] == req.data['confirm_password']:
-            serializer = CreateUserSerializer(data=req.data)
-            if serializer.is_valid():
-                user = serializer.save()
-                if user:
-                    json = serializer.data
-                    return Response(json,status=status.HTTP_201_CREATED)
-
-            return Response(serializer.erros,status=status.HTTP_400_BAD_REQUEST)
+            User(
+                nickname = req.data['nickname'],
+                password = make_password(req.data['password']),
+                email = req.data['email']
+            ).save()
+            return Response(status= status.HTTP_201_CREATED)
         else:
             return Response({'msg' : '비밀번호와 확인 비밀번호가 일치하지 않습니다.'},
             status = status.HTTP_406_NOT_ACCEPTABLE)
 
 class DetailAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="상세페이지",
+        tags = ['detail_page'],
+    )
     def get(self,req,id):
         sneaker = Sneakers.objects.get(id = id)
         board = SneakerSerializer(sneaker)
@@ -142,7 +153,6 @@ class DetailAPIView(APIView):
         UserMovementOfViews.objects.create(user_id = user,sneaker_id = sneaker)
         #현 유저가 현재 게시판에서 평가 내역 확인
         user_cod = CopOrDrop.objects.get(user_id = user, board_id = sneaker)
-        print(user_cod)
         if user_cod:
             user_cod = CoD_Serializer(user_cod)
         else:
@@ -151,6 +161,11 @@ class DetailAPIView(APIView):
         return Response({'board': board.data, 'choice' : user_cod.data['choice']}, status = status.HTTP_200_OK)
 class CopOrDropAPIView(APIView):
     #cop or drop 평가 저장
+    @swagger_auto_schema(
+        operation_description="신발 평가 Cop Or Drop",
+        tags = ['CoD'],
+        request_body=CoD_Serializer
+    )
     def post(self,req):
 
         s_id = req.data['id']
@@ -161,6 +176,7 @@ class CopOrDropAPIView(APIView):
 
         # 평가로직
         board.total_count += 1
+
         if bool(req.data['cop']):
             board.cop_count += 1
             CopOrDrop.objects.create(user_id = user, board_id = board, choice = True)
@@ -170,3 +186,30 @@ class CopOrDropAPIView(APIView):
         board.cop_percent = board.cop_count / board.total_count
         board.save()
         return Response(None,status=status.HTTP_201_CREATED)
+
+
+class MypageAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="마이페이지 요청",
+        tags = ['MyPage'],
+        request_body=MyPageSerializer
+    )
+    def get(self,req):
+        u_id = decoder(req.headers['Access-Token'])['user_id']
+        try:
+            user = get_object_or_404(User,id = u_id)
+            return Response(MyPageSerializer(user),status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response(status = status.HTTP_404_NOT_FOUND)
+    @swagger_auto_schema(
+        operation_description="마이페이지 수정",
+        tags = ['MyPage'],
+        request_body=MyPageSerializer
+    )
+    def post(self,req):
+        u_id = decoder(req.headers['Access-Token'])['user_id']
+
+        user = get_object_or_404(User,id = u_id)
+        data = {'nickname' : req.get['nickname']}
+
+        MyPageSerializer(user,data=data)

@@ -29,7 +29,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 schema_url_patterns = [ 
-    path('', include('rottenshoe_drf.urls')), 
+    path('api/', include('rottenshoe_drf.urls')), 
     ] 
 schema_view_v1 = get_schema_view( 
     openapi.Info( title="rottenshoe_api", #타이틀

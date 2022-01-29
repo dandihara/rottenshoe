@@ -44,27 +44,24 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 # 회원가입
-# pop으로 바로 들어갈 아이템만 남기고 처리.
 class CreateUserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField()
-    nickname = serializers.CharField()
-    password = serializers.CharField(min_length = 8)
-
     class Meta:
         model = User
-        fields = ('email','nickname','password')
-
-    #pop은 말 그대로 pop. validated_data에서 가져오면서 그 부분은 제거됨.
-    def create(self, validated_data):
-        password = validated_data.pop('password',None)
-        instance = self.Meta.model(**validated_data)
-        if password is not None:
-            instance.set_password(password)
-        instance.save()
-        return instance
+        fields = ['email','nickname','password']
 
 
 class CoD_Serializer(serializers.ModelSerializer):
     class Meta:
         model = CopOrDrop
-        fields = ['choice']
+        fields = '__all__'
+
+
+class MyPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['nickname','email','created_time']
+
+
+    def update(self,instance,data):
+        instance.nickname = data['nickname']
+        instance.save()
