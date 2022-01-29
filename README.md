@@ -169,4 +169,7 @@ frontend : vanilla js / html+css
   - swagger 코드 추가 -> 명세서 제작 편의성을 위해서 제작 
   - ![swagger 추가](https://user-images.githubusercontent.com/23503161/151375595-782cd4a2-44d3-4b73-9d93-094d917a23d2.PNG)
 
+21-01-29
+  - rest_framework.permission 이용해 api 접근 가능 여부를 생각해 볼 만 할 듯. (doc & 구글링 이용)
+
 
