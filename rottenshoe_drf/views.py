@@ -81,11 +81,12 @@ class CommentAPIView(APIView):
         board_id = req.data['board_id']
         u_id = decoder(req.headers['Access-Token'])['user_id']
         comment = req.data['comment']
-        
-        comment_instance = get_object_or_404(Comment,board_id=board_id,user_id = u_id)
-        #serialize 사용 update 방식 주어진 instance와 변경될 데이터를 보내주어 변경 후 저장.
-        serializer = CommentSerializer(comment_instance,data = {'comment' : comment})
-        
+        try:
+            comment_instance = get_object_or_404(Comment,board_id=board_id,user_id = u_id)
+            #serialize 사용 update 방식 주어진 instance와 변경될 데이터를 보내주어 변경 후 저장.
+            serializer = CommentSerializer(comment_instance,data = {'comment' : comment})
+        except Comment.DoesNotExist:
+            return Response({'error' : '실행 될 수 없는 요청입니다.'}, status = status.HTTP_404_NOT_FOUND)
         return Response(None,status=status.HTTP_202_ACCEPTED)
     
     #댓글 삭제(delete)
