@@ -172,4 +172,5 @@ frontend : vanilla js / html+css
 21-01-29
   - rest_framework.permission 이용해 api 접근 가능 여부를 생각해 볼 만 할 듯. (doc & 구글링 이용)
 
-
+21-01-30
+ - drf validation을 꼭 써야하는가 ?? 예시 로직이 일반적인 orm 사용과 비교했을 때 코드양은 줄지라도 기존 orm 코드로 썼을 때가 가독성이 좋다고 생각이 들음.
