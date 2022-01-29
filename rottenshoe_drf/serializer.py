@@ -1,9 +1,8 @@
 from rest_framework import serializers
-from django.contrib.auth import authenticate
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from rottenshoe.models import CopOrDrop
-from .models import Sneakers,User
+from .models import Sneakers,User,Comment
 
 #스니커즈 데이터 화면에 따른 분할
 class SneakerSerializer(serializers.ModelSerializer):
@@ -22,6 +21,10 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
         
 #jwt 변형 토큰 생성(login)
 #토큰 내부 user_id, nickname만 저장

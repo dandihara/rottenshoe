@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -106,12 +107,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST' : 'database-1.cluster-cvt846kbv1ju.ap-northeast-2.rds.amazonaws.com',
+        'HOST' : 'database-1-instance-1.cvt846kbv1ju.ap-northeast-2.rds.amazonaws.com',
         'NAME': 'rottenshoedb',
         'USER' : 'dandihara',
         'PASSWORD' : get_secret("DB_PASSWORD"),
         'PORT' : '3306',
-        'OPTIONS': {'charset':'utf8mb4'}
+        #'OPTIONS': {'charset':'utf8mb4'} 얘땜에 mysql 2000 error !
     }
 }
 
@@ -190,7 +191,7 @@ REST_FRAMEWORK = {
 
 #JWT
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=30), # Access-Token 만료시간
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60), # Access-Token 만료시간
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(hours=12), # Refresh Token의 만료시간
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,

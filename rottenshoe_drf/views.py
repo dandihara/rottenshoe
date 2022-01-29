@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 
-from rottenshoe_drf.serializer import CoD_Serializer, MyTokenObtainPairSerializer, SneakerSerializer,IndexSerializer, CreateUserSerializer
+from rottenshoe_drf.serializer import CoD_Serializer, MyTokenObtainPairSerializer, SneakerSerializer,IndexSerializer, CreateUserSerializer,CommentSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import permissions,status
 from rest_framework.views import APIView
@@ -8,7 +8,8 @@ from rest_framework.response import Response
 from .models import *
 from .token import *
 
-import logging
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 '''
 1)메인페이지
@@ -23,6 +24,10 @@ import logging
         
 class IndexAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
+    @swagger_auto_schema(
+        operation_description="메인페이지 데이터 요청",
+        tags=['main']
+    )
     def get(self,req):
         newList = Sneakers.objects.all().order_by('-retail_date') # 출시일순 - 최신순
         hotList = Sneakers.objects.all().order_by('-cop_percent') # 추후 로직 변경(조회수 / 최근 유저의 조회량/ 점수 종합)
@@ -33,6 +38,10 @@ class IndexAPIView(APIView):
 #더보기 작업 분할
 class ListAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
+    @swagger_auto_schema(
+        operation_description="카테고리별 확장 데이터 요청",
+        tags = ['main_expand'],
+    )
     def get(self,req,category):
         if category == 'new':
             newList = SneakerSerializer(Sneakers.objects.all().order_by('-retail_date'), many = True)
@@ -43,6 +52,11 @@ class ListAPIView(APIView):
             return Response(hotList.data,status.HTTP_200_OK)
 
 class CommentAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description="댓글 추가",
+        tags = ['comments'],
+        request_body=CommentSerializer
+    )
     def post(self,req):
         s_id = req.data['id']
         board = get_object_or_404(Sneakers,id = s_id)
@@ -69,6 +83,11 @@ class ObtainTokenPairWithNickname(TokenObtainPairView):
 
 class RegisterAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
+    @swagger_auto_schema(
+        operation_description="회원 가입",
+        tags = ['register'],
+        request_body=CreateUserSerializer
+    )
     def post(self,req):
         if req.data['password'] == req.data['confirm_password']:
             serializer = CreateUserSerializer(data=req.data)
