@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import permissions,status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny,IsAuthenticated
 from .models import *
 from .token import *
 
@@ -21,9 +22,9 @@ from drf_yasg import openapi
 
 '''
 
-        
+
 class IndexAPIView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (AllowAny,)
     @swagger_auto_schema(
         operation_description="메인페이지 데이터 요청",
         tags=['main']
@@ -37,7 +38,7 @@ class IndexAPIView(APIView):
 
 #더보기 작업 분할
 class ListAPIView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (AllowAny,)
     @swagger_auto_schema(
         operation_description="카테고리별 확장 데이터 요청",
         tags = ['main_expand'],
@@ -53,7 +54,7 @@ class ListAPIView(APIView):
 
 class CommentAPIView(APIView):
     @swagger_auto_schema(
-        operation_description="댓글 추가",
+        operation_description="댓글 추가 및 관리(삭제, 수정)",
         tags = ['comments'],
         request_body=CommentSerializer
     )
@@ -74,15 +75,37 @@ class CommentAPIView(APIView):
 
         return Response(None,status = status.HTTP_202_ACCEPTED)
 
-
+    #댓글 수정(update)
+    def put(self,req):
+        
+        board_id = req.data['board_id']
+        u_id = decoder(req.headers['Access-Token'])['user_id']
+        comment = req.data['comment']
+        
+        comment_instance = get_object_or_404(Comment,board_id=board_id,user_id = u_id)
+        #serialize 사용 update 방식 주어진 instance와 변경될 데이터를 보내주어 변경 후 저장.
+        serializer = CommentSerializer(comment_instance,data = {'comment' : comment})
+        
+        return Response(None,status=status.HTTP_202_ACCEPTED)
+    
+    #댓글 삭제(delete)
+    def delete(self,req):
+        board_id = req.data['board_id']
+        u_id = decoder(req.headers['Access-Token'])['user_id']
+        try:
+            comment_instance = get_object_or_404(Comment,board_id=board_id,user_id = u_id)
+            comment_instance.delete()
+        except Comment.DoesNotExist:
+            return Response({'error' : '실행 될 수 없는 요청입니다.'}, status = status.HTTP_404_NOT_FOUND)
+        
 class ObtainTokenPairWithNickname(TokenObtainPairView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (AllowAny,) 
 
     serializer_class = MyTokenObtainPairSerializer
 
 
 class RegisterAPIView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (AllowAny,)
     @swagger_auto_schema(
         operation_description="회원 가입",
         tags = ['register'],

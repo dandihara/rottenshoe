@@ -181,11 +181,12 @@ CORS_ALLOW_CREDENTIALS = True
 REST_FRAMEWORK = { 
     'DEFAULT_AUTHENTICATION_CLASSES': 
          [ 
-             'rest_framework_simplejwt.authentication.JWTAuthentication',
+             'rest_framework_simplejwt.authentication.JWTAuthentication',#JWT사용하여 인증
          ],
     'DEFAULT_PERMISSION_CLASSES': 
         [
-            'rest_framework.permissions.AllowAny',
+            'rest_framework.permissions.AllowAny',#접근 허가(인증없이)
+            #'rest_framework.permissions.IsAuthenticated', 인증해야 접근 가능
         ],
     }
 
