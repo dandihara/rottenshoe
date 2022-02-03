@@ -107,6 +107,7 @@ frontend : vanilla js / html+css
 
 - "api/detail/(s_id)" => 상세페이지
                       [GET] id => 신발 데이터 인덱스
+                      header => access-token(not required)
 
 - "api/register => 회원가입 [POST]
                     body {
@@ -129,7 +130,7 @@ frontend : vanilla js / html+css
                   body {
                     refresh : refresh_token
                   }
-
+- "api/search/(keyword) => 검색 요청 [GET]
 
 # 고민 리스트
 
