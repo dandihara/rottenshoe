@@ -11,4 +11,5 @@ urlpatterns = [
     path("cop/",views.CopOrDropAPIView.as_view()),
     path("register/",views.RegisterAPIView.as_view(), name = 'register'),
     path("comment/",views.CommentAPIView.as_view(),name = 'comment'),
+    path("search/<str:keyword>",views.SearchAPIView.as_view(),name='search'),
 ]

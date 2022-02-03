@@ -130,3 +130,11 @@ class UserMovementOfViews(models.Model):
 
     class Meta:
         db_table = 'user_movements_of_views'
+
+class SearchRequest(models.Model):
+    keyword = models.CharField(max_length=200)
+    request_time = models.DateTimeField(default=datetime.datetime.now())
+
+    class Meta:
+        db_table = 'requests_of_search'
+

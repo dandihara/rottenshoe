@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404
+from django.db.models.query_utils import Q
 
 from rottenshoe_drf.serializer import CoD_Serializer, MyPageSerializer, MyTokenObtainPairSerializer, SneakerSerializer,IndexSerializer, CreateUserSerializer,CommentSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import permissions,status
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny,IsAuthenticated
@@ -19,6 +20,7 @@ from django.contrib.auth.hashers import make_password
 5)회원가입
 6)평가 (Cop or Drop)
 7)마이페이지 요청 및 회원 정보 수정
+8)검색 요청
 '''
 
 
@@ -213,3 +215,28 @@ class MypageAPIView(APIView):
         data = {'nickname' : req.get['nickname']}
 
         MyPageSerializer(user,data=data)
+
+
+class SearchAPIView(APIView):
+    @swagger_auto_schema(
+        operation_description='검색 기능',
+        tags = ['search']
+    )
+    def get(self,keyword):
+        result = []
+        word_list = keyword.split(" ")
+        keyword_list = [k.keyword for k in Keyword.objects.all()]
+
+        for word in word_list:
+            if word in keyword_list:
+                model_number_list = list(Keyword.objects.filter(keyword=word))
+                result += [Sneakers.objects.get(model_number = s.sneaker_id)
+                        for s in model_number_list]
+            else:
+                result += list(Sneakers.objects.filter(Q(sneaker_name__icontains = word) | 
+                                                    Q(brand__icontains = word) |
+                                                    Q(sneaker_name_ko__icontains = word)).distinct())
+
+        context = {'result' : result, 'keyword':keyword}
+        SearchRequest.objects.create(keyword = keyword, request_time = datetime.datetime.now())
+        return Response(context,status = status.HTTP_200_OK)
