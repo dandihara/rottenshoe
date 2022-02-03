@@ -107,9 +107,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST' : 'database-1-instance-1.cvt846kbv1ju.ap-northeast-2.rds.amazonaws.com',
+        'HOST' : 'rottenshoedb.cluster-cvt846kbv1ju.ap-northeast-2.rds.amazonaws.com',
         'NAME': 'rottenshoedb',
-        'USER' : 'dandihara',
+        'USER' : 'rottenadmin',
         'PASSWORD' : get_secret("DB_PASSWORD"),
         'PORT' : '3306',
         #'OPTIONS': {'charset':'utf8mb4'} 얘땜에 mysql 2000 error !

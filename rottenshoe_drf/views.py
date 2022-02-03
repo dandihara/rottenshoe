@@ -232,6 +232,8 @@ class SearchAPIView(APIView):
                 model_number_list = list(Keyword.objects.filter(keyword=word))
                 result += [Sneakers.objects.get(model_number = s.sneaker_id)
                         for s in model_number_list]
+                context = {'result' : result, 'keyword' : keyword}
+                return Response(context, status=status.HTTP_200_OK)
             else:
                 result += list(Sneakers.objects.filter(Q(sneaker_name__icontains = word) | 
                                                     Q(brand__icontains = word) |
