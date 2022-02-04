@@ -108,7 +108,7 @@ class CommentAPIView(APIView):
             comment_instance = get_object_or_404(Comment,board_id=board_id,user_id = u_id)
             comment_instance.delete()
         except Comment.DoesNotExist:
-            return Response({'error' : '실행 될 수 없는 요청입니다.'}, status = status.HTTP_404_NOT_FOUND)
+            return Response({'error' : '존재하지 않는 댓글입니다.'}, status = status.HTTP_404_NOT_FOUND)
         
 class ObtainTokenPairWithNickname(TokenObtainPairView):
     permission_classes = (AllowAny,) 
@@ -174,7 +174,12 @@ class CopOrDropAPIView(APIView):
         request_body=CoD_Serializer
     )
     def post(self,req):
-
+        #로그인 여부 확인
+        try:
+            u_id = decoder(req.headers['Access-Token'])['user_id']
+        except KeyError:
+            return Response({"response" : "토큰 값 없음"},status=status.HTTP_401_UNAUTHORIZED)
+            
         s_id = req.data['id']
         u_id = decoder(req.headers['Access-Token'])['user_id']
 
@@ -202,7 +207,12 @@ class MypageAPIView(APIView):
         request_body=MyPageSerializer
     )
     def get(self,req):
-        u_id = decoder(req.headers['Access-Token'])['user_id']
+        #접근하려고 할 때 토큰이 없으면 로그인 요청
+        try:
+            u_id = decoder(req.headers['Access-Token'])['user_id']
+        except KeyError:
+            return Response({"response" : "토큰 값 없음"},status=status.HTTP_401_UNAUTHORIZED)
+
         try:
             user = get_object_or_404(User,id = u_id)
             return Response(MyPageSerializer(user),status=status.HTTP_200_OK)
