@@ -183,4 +183,7 @@ frontend : vanilla js / html+css
 - static 파일 세팅(배포세팅) / 유저 값 유무에 따라 api 로직 재 설정
 
 21-02-05
-- 배포 세팅(static파일 부재로 인한 하면 꺠짐) 
+- 배포 세팅(static파일 부재로 인한 화면 꺠짐)
+
+21-02-06
+- nginx에 대한 고찰 필요성 느낌 => upstream / server(도메인 주소를 얻어야만 사용 가능한 건가 ?)
