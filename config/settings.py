@@ -17,7 +17,9 @@ import datetime
 from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 secret_file = os.path.join(BASE_DIR,'secrets.json')
 
@@ -85,7 +87,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR , 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -155,12 +157,13 @@ USE_TZ = False
 
 ROOT_DIR = os.path.dirname(BASE_DIR)
 STATIC_URL = '/static/'
-STATIC_DIR = os.path.join(BASE_DIR,'static')
+STATIC_DIR = os.path.join(BASE_DIR,'rottenshoe/static')
 STATICFILES_DIRS = [
-    #os.path.join(BASE_DIR / 'static'),
+    #os.path.join(BASE_DIR , 'rottenshoe/static'),
     STATIC_DIR,
 ]
-STATIC_ROOT = os.path.join(ROOT_DIR, '.static_root')
+#static파일 모을 장소
+STATIC_ROOT = os.path.join(ROOT_DIR, 'rottenshoe/.static_root')
 
 # MEDIA 파일 경로
 MEDIA_URL = '/media/'
