@@ -35,8 +35,8 @@ class User(AbstractBaseUser):
     nickname = models.CharField(max_length=30, unique=True)
 
     is_staff = models.BooleanField(default=False)
-    created_time = models.DateTimeField(default = timezone.now)
-    updated_time = models.DateTimeField(default = timezone.now)
+    created_time = models.DateTimeField(auto_now=True)
+    updated_time = models.DateTimeField(auto_now_add=True)
 
     object = CustomUserManager()
     USERNAME_FIELD = 'email'
@@ -66,8 +66,8 @@ class Sneakers(models.Model):
     cop_percent = models.FloatField(default=0)
     thumbnail = models.ImageField(upload_to = '', blank = True)
     retail_date = models.DateField()
-    created_time = models.DateTimeField(default = timezone.now)
-    updated_time = models.DateTimeField(default = timezone.now)
+    created_time = models.DateTimeField(auto_now=True)
+    updated_time = models.DateTimeField(auto_now_add=True)
     views = models.PositiveIntegerField(default=0,verbose_name='조회수') # 음수제거
 
     def __str__(self):
@@ -86,8 +86,8 @@ class Comment(models.Model):
     board_id  = models.ForeignKey(Sneakers, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     comment = models.TextField()
-    created_time = models.DateTimeField(default = timezone.now)
-    updated_time = models.DateTimeField(default = timezone.now)
+    created_time = models.DateTimeField(auto_now=True)
+    updated_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'comments'
@@ -104,8 +104,8 @@ class ScoreBoard(models.Model):
     board_id  = models.ForeignKey(Sneakers, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete = models.CASCADE)
     score = models.FloatField()
-    created_time = models.DateTimeField(default = timezone.now)
-    updated_time = models.DateTimeField(default = timezone.now)
+    created_time = models.DateTimeField(auto_now=True)
+    updated_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'sneakers_score'
@@ -126,14 +126,14 @@ class Keyword(models.Model):
 class UserMovementOfViews(models.Model):
     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
     sneaker_id = models.ForeignKey(Sneakers,on_delete=models.CASCADE)
-    movement_time = models.DateTimeField(default=datetime.datetime.now())
+    movement_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'user_movements_of_views'
 
 class SearchRequest(models.Model):
     keyword = models.CharField(max_length=200)
-    request_time = models.DateTimeField(default=datetime.datetime.now())
+    request_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'requests_of_search'
