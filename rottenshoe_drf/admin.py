@@ -5,7 +5,7 @@ from models import SneakerFeatures
 # Register your models here.
 
 class SneakerReaturesAdmin(admin.ModelAdmin):
-    list_display = ('sneaker', 'comfortable','grip','spotligth','convenience')
+    list_display = ('sneaker', 'comfortable','grip','spotlight','convenience')
 
 
 admin.site.register(SneakerFeatures,SneakerReaturesAdmin)
