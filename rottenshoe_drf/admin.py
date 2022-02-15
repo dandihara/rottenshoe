@@ -9,4 +9,3 @@ class SneakerReaturesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(SneakerFeatures,SneakerReaturesAdmin)
-admin.site.unregister(auth.models.Group)
