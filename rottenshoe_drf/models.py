@@ -8,3 +8,6 @@ class SneakerFeatures(models.Model):
     grip = models.FloatField(default=0.0,verbose_name='착화감')
     spotlight = models.FloatField(default=0.0,verbose_name='화제성')
     convenience = models.FloatField(default=0.0,verbose_name='실용성')
+
+    class Meta:
+        db_table = 'sneakerFeature'
