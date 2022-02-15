@@ -114,7 +114,7 @@ DATABASES = {
         'USER' : 'rottenadmin',
         'PASSWORD' : get_secret("DB_PASSWORD"),
         'PORT' : '3306',
-        #'OPTIONS': {'charset':'utf8mb4'} 얘땜에 mysql 2000 error !
+        'OPTIONS': {'charset':'utf8mb4'} #얘땜에 mysql 2000 error ? 로컬에선 문제가 되진 않았다 뭐지
     }
 }
 
