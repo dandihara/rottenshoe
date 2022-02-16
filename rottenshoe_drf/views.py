@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from .models import *
 from .token import *
+from .recommend import *
 
 from drf_yasg.utils import swagger_auto_schema
 from django.contrib.auth.hashers import make_password
@@ -143,6 +144,12 @@ class DetailAPIView(APIView):
     def get(self,req,id):
         sneaker = Sneakers.objects.get(id = id)
         board = SneakerSerializer(sneaker)
+        #필요한 데이터만 뽑아서 오기 values_list
+        s_features  = SneakerFeatures.objects.filter(sneaker = id).values_list('comfortable','grip','spotlight','convenience')
+        #추천리스트 get
+        #전체에서 자신을 뺀 나머지 스니커 데이터와 비교하여 가장 비슷한 리스트 5개 콜업.
+        recommand_data = get_cos_similar(s_features)[:5]
+
         #토큰 유무 확인
         try:
             u_id = decoder(req.headers['Access-Token'])['user_id']
@@ -165,7 +172,7 @@ class DetailAPIView(APIView):
         else:
             sneaker.update_view_count
     
-        return Response({'board': board.data, 'choice' : user_cod.data['choice']}, status = status.HTTP_200_OK)
+        return Response({'board': board.data, 'choice' : user_cod.data['choice'], 'recommand' : recommand_data}, status = status.HTTP_200_OK)
 class CopOrDropAPIView(APIView):
     #cop or drop 평가 저장
     @swagger_auto_schema(
