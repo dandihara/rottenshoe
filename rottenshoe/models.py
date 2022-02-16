@@ -71,7 +71,7 @@ class Sneakers(models.Model):
     views = models.PositiveIntegerField(default=0,verbose_name='조회수') # 음수제거
 
     def __str__(self):
-        return self.model_number
+        return self.model_number + " / " + self.sneaker_name
 
     @property
     def update_view_count(self):
