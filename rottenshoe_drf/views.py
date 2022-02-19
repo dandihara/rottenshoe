@@ -143,6 +143,7 @@ class DetailAPIView(APIView):
     )
     def get(self,req,id):
         sneaker = Sneakers.objects.get(id = id)
+        print(sneaker)
         board = SneakerSerializer(sneaker)
         #필요한 데이터만 뽑아서 오기 values_list
         s_features  = SneakerFeatures.objects.filter(sneaker = id).values_list('comfortable','grip','spotlight','convenience')

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os,json
 import datetime
+from unittest.mock import DEFAULT
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -207,4 +208,65 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
     'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+#logging
+DEFAULT_LOGGING = {
+    'version': 1,
+    'disable_existing_loggers' : False,
+    'filters': {
+        'require_debug_false':{
+            '()' : 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true':{
+            '()':'django.utils.log.RequireDebugTrue',
+        }
+    },
+    'formatters' : {
+        'django.server' :{
+            '()':'django.utils.log.ServerFormatter',
+            'format' : '[{server_time}]{message}',
+            'style': '{',
+        },
+        'standard': {
+            'format' : '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level' : 'INFO',
+            'filters': ['require_debug_true'],
+            'class' : 'logging.StreamHandler',
+        },
+        'django.server':{
+            'level': 'INFO',
+            'class' : 'logging.StreamHandler',
+            'formatter' : 'django.server',
+        },
+        'mail_admins':{#error상황이 난다면 email로 로그를 쏴주는 핸들러.SMTP / settings에 ADMINS 값으로 이메일 설정을 해야 사용 가능
+            'level':'ERROR',
+            'filters':['require_debug_false'],
+            'class' :'django.utils.log.AdminEmailHandler',
+        },
+        'file' : {
+            'level':'INFO',
+            'filters':['require_debug_false'],
+            'class' :'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR/'logs/rottenshoe.log',
+            'maxBytes' : 1024*1024*10, #10MB
+            'backupCount':5, #롤링되는 파일 갯수
+            'formatter' : 'standard',
+        },
+    },
+    'loggers' : {
+        'django': {
+            'handlers':['console','mail_admins','file'],
+            'level' : 'INFO',
+        },
+        'django.server':{
+            'handlers':['django.server'],
+            'level' :'INFO',
+            'propagate' : False,
+        },
+    }
 }

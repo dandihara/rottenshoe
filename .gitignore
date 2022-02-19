@@ -4,6 +4,7 @@ __pycache__
 myvenv
 db.sqlite3
 /media
+logs
 ##가상환경
 rottenshoe_env/
 
