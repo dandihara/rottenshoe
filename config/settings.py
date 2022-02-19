@@ -115,7 +115,7 @@ DATABASES = {
         'USER' : 'rottenadmin',
         'PASSWORD' : get_secret("DB_PASSWORD"),
         'PORT' : '3306',
-        'OPTIONS': {'charset':'utf8mb4'} #얘땜에 mysql 2000 error ? 로컬에선 문제가 되진 않았다 뭐지
+        'OPTIONS': {'charset':'utf8mb4'}
     }
 }
 
@@ -219,8 +219,8 @@ DEFAULT_LOGGING = {
             '()' : 'django.utils.log.RequireDebugFalse',
         },
         'require_debug_true':{
-            '()':'django.utils.log.RequireDebugTrue',
-        }
+            '()' : 'django.utils.log.RequireDebugTrue',
+        },
     },
     'formatters' : {
         'django.server' :{
@@ -252,7 +252,7 @@ DEFAULT_LOGGING = {
             'level':'INFO',
             'filters':['require_debug_false'],
             'class' :'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR/'logs/rottenshoe.log',
+            'filename': os.path.join(BASE_DIR ,'/logs/rottenshoe.log'),
             'maxBytes' : 1024*1024*10, #10MB
             'backupCount':5, #롤링되는 파일 갯수
             'formatter' : 'standard',
