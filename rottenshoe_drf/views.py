@@ -249,18 +249,30 @@ class SearchAPIView(APIView):
         result = []
         word_list = keyword.split(" ")
         keyword_list = [k.keyword for k in Keyword.objects.all()]
-
+        #new version
+        #기존은 단어값마다 요청을 보냈지만 이를 q객체를 이용하여 한번의 쿼리로 읽어오게 함.
+        q = Q()
         for word in word_list:
             if word in keyword_list:
                 model_number_list = list(Keyword.objects.filter(keyword=word))
-                result += [Sneakers.objects.get(model_number = s.sneaker_id)
-                        for s in model_number_list]
-                context = {'result' : result, 'keyword' : keyword}
-                return Response(context, status=status.HTTP_200_OK)
+                result += [Sneakers.objects.get(model_number = s.sneaker_id) for s in model_number_list]
             else:
-                result += list(Sneakers.objects.filter(Q(sneaker_name__icontains = word) | 
-                                                    Q(brand__icontains = word) |
-                                                    Q(sneaker_name_ko__icontains = word)).distinct())
+                q.add(Q(sneaker_name__icontains = word) | 
+                    Q(brand__icontains = word) |
+                    Q(sneaker_name_ko__icontains = word))
+        result = list(Sneakers.objects.filter(q).distinct().order_by('views'))
+
+        # for word in word_list:
+        #     if word in keyword_list:
+        #         model_number_list = list(Keyword.objects.filter(keyword=word))
+        #         result += [Sneakers.objects.get(model_number = s.sneaker_id)
+        #                 for s in model_number_list]
+        #         context = {'result' : result, 'keyword' : keyword}
+        #         return Response(context, status=status.HTTP_200_OK)
+        #     else:
+        #         result += list(Sneakers.objects.filter(Q(sneaker_name__icontains = word) | 
+        #                                             Q(brand__icontains = word) |
+        #                                             Q(sneaker_name_ko__icontains = word)).distinct())
 
         context = {'result' : result, 'keyword':keyword}
         SearchRequest.objects.create(keyword = keyword, request_time = datetime.datetime.now())
