@@ -143,10 +143,11 @@ class DetailAPIView(APIView):
     )
     def get(self,req,id):
         sneaker = Sneakers.objects.get(id = id)
-        print(sneaker)
+        sneaker_data = sneaker
         board = SneakerSerializer(sneaker)
         #필요한 데이터만 뽑아서 오기 values_list
-        s_features  = SneakerFeatures.objects.filter(sneaker = id).values_list('comfortable','grip','spotlight','convenience')
+        #객체 자체를 보내줘야 콜업 가능.
+        s_features  = SneakerFeatures.objects.filter(sneaker=sneaker_data).values_list('comfortable','grip','spotlight','convenience')
         #추천리스트 get
         #전체에서 자신을 뺀 나머지 스니커 데이터와 비교하여 가장 비슷한 리스트 5개 콜업.
         recommand_data = get_cos_similar(s_features)[:5]
@@ -249,7 +250,7 @@ class SearchAPIView(APIView):
         result = []
         word_list = keyword.split(" ")
         keyword_list = [k.keyword for k in Keyword.objects.all()]
-        #new version
+
         #기존은 단어값마다 요청을 보냈지만 이를 q객체를 이용하여 한번의 쿼리로 읽어오게 함.
         q = Q()
         for word in word_list:
@@ -257,23 +258,12 @@ class SearchAPIView(APIView):
                 model_number_list = list(Keyword.objects.filter(keyword=word))
                 result += [Sneakers.objects.get(model_number = s.sneaker_id) for s in model_number_list]
             else:
-                q.add(Q(sneaker_name__icontains = word) | 
+                q.add(Q(sneaker_name__icontains = word)| 
                     Q(brand__icontains = word) |
                     Q(sneaker_name_ko__icontains = word))
         result = list(Sneakers.objects.filter(q).distinct().order_by('views'))
 
-        # for word in word_list:
-        #     if word in keyword_list:
-        #         model_number_list = list(Keyword.objects.filter(keyword=word))
-        #         result += [Sneakers.objects.get(model_number = s.sneaker_id)
-        #                 for s in model_number_list]
-        #         context = {'result' : result, 'keyword' : keyword}
-        #         return Response(context, status=status.HTTP_200_OK)
-        #     else:
-        #         result += list(Sneakers.objects.filter(Q(sneaker_name__icontains = word) | 
-        #                                             Q(brand__icontains = word) |
-        #                                             Q(sneaker_name_ko__icontains = word)).distinct())
-
         context = {'result' : result, 'keyword':keyword}
+        #검색시각과 키워드를 저장하여 추후 계절별이나 날씨별 추천에 사용하려고 함.
         SearchRequest.objects.create(keyword = keyword, request_time = datetime.datetime.now())
         return Response(context,status = status.HTTP_200_OK)
