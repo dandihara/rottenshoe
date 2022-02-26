@@ -155,6 +155,8 @@ class DetailAPIView(APIView):
         #토큰 유무 확인
         if req.headers['Access-Token']:
             u_id = decoder(req.headers['Access-Token'])['user_id']
+        else:
+            u_id = None
         #토큰 값이 있을 때(로그인 하고 접근 했을 때)
         if u_id is not None:
             user = get_object_or_404(User,id=u_id)
