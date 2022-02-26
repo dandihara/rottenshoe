@@ -143,8 +143,8 @@ class DetailAPIView(APIView):
     )
     def get(self,req,id):
         sneaker = Sneakers.objects.get(id = id)
-        sneaker_data = sneaker
-        board = SneakerSerializer(sneaker)
+        #sneaker_data = sneaker
+        #board = SneakerSerializer(sneaker)
         #필요한 데이터만 뽑아서 오기 values_list
         #객체 자체를 보내줘야 콜업 가능.
         #s_features  = SneakerFeatures.objects.filter(sneaker=sneaker_data)
