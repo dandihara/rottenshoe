@@ -252,7 +252,7 @@ LOGGING = {
             'level':'INFO',
             'filters':['require_debug_false'],
             'class' :'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs/rottenshoe.log',
+            'filename': 'logs/rottenshoe.log',
             'maxBytes' : 1024*1024*10, #10MB
             'backupCount':5, #롤링되는 파일 갯수
             'formatter' : 'standard',
