@@ -153,9 +153,9 @@ class DetailAPIView(APIView):
         recommand_data = get_cos_similar(s_features)[:5]
 
         #토큰 유무 확인
-        if req.headers['Access-Token']:
+        try:
             u_id = decoder(req.headers['Access-Token'])['user_id']
-        else:
+        except AssertionError:
             u_id = None
         #토큰 값이 있을 때(로그인 하고 접근 했을 때)
         if u_id is not None:
