@@ -174,7 +174,7 @@ class DetailAPIView(APIView):
         # else:
         #     sneaker.update_view_count
     
-        return Response({'board': board.data, 'choice' : user_cod.data['choice'], 'recommand' : recommand_data}, status = status.HTTP_200_OK)
+        return Response({'board': board.data, 'recommand' : recommand_data}, status = status.HTTP_200_OK)
 class CopOrDropAPIView(APIView):
     #cop or drop 평가 저장
     @swagger_auto_schema(
