@@ -152,27 +152,27 @@ class DetailAPIView(APIView):
         #전체에서 자신을 뺀 나머지 스니커 데이터와 비교하여 가장 비슷한 리스트 5개 콜업.
         recommand_data = get_cos_similar(s_features)[:5]
 
-        #토큰 유무 확인
-        try:
-            u_id = decoder(req.headers['Access-Token'])['user_id']
-        except AssertionError:
-            u_id = None
-        #토큰 값이 있을 때(로그인 하고 접근 했을 때)
-        if u_id is not None:
-            user = get_object_or_404(User,id=u_id)
-            #조회수 카운트
-            sneaker.update_view_count
-            #유저 접속 기록 데이터 저장
-            UserMovementOfViews.objects.create(user_id = user,sneaker_id = sneaker)
-            #현 유저가 현재 게시판에서 평가 내역 확인
-            user_cod = CopOrDrop.objects.get(user_id = user, board_id = sneaker)
-            if user_cod:
-                user_cod = CoD_Serializer(user_cod)
-            else:
-                user_cod = None
-        #로그인 없이 접근 했을 때
-        else:
-            sneaker.update_view_count
+        # #토큰 유무 확인
+        # try:
+        #     u_id = decoder(req.headers['Access-Token'])['user_id']
+        # except AssertionError:
+        #     u_id = None
+        # #토큰 값이 있을 때(로그인 하고 접근 했을 때)
+        # if u_id is not None:
+        #     user = get_object_or_404(User,id=u_id)
+        #     #조회수 카운트
+        #     sneaker.update_view_count
+        #     #유저 접속 기록 데이터 저장
+        #     UserMovementOfViews.objects.create(user_id = user,sneaker_id = sneaker)
+        #     #현 유저가 현재 게시판에서 평가 내역 확인
+        #     user_cod = CopOrDrop.objects.get(user_id = user, board_id = sneaker)
+        #     if user_cod:
+        #         user_cod = CoD_Serializer(user_cod)
+        #     else:
+        #         user_cod = None
+        # #로그인 없이 접근 했을 때
+        # else:
+        #     sneaker.update_view_count
     
         return Response({'board': board.data, 'choice' : user_cod.data['choice'], 'recommand' : recommand_data}, status = status.HTTP_200_OK)
 class CopOrDropAPIView(APIView):
