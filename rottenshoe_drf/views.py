@@ -7,6 +7,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny,IsAuthenticated
+from rest_framework.parsers import JSONParser
+
 from .models import *
 from .token import *
 from .recommend import *
@@ -125,16 +127,12 @@ class RegisterAPIView(APIView):
         request_body=CreateUserSerializer
     )
     def post(self,req):
-        if req.data['password'] == req.data['confirm_password']:
-            User(
-                nickname = req.data['nickname'],
-                password = make_password(req.data['password']),
-                email = req.data['email']
-            ).save()
-            return Response(status= status.HTTP_201_CREATED)
-        else:
-            return Response({'msg' : '비밀번호와 확인 비밀번호가 일치하지 않습니다.'},
-            status = status.HTTP_406_NOT_ACCEPTABLE)
+        data = JSONParser().parse(req)
+        serializer = CreateUserSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status = 201)
+        return Response(status=400)
 
 class DetailAPIView(APIView):
     @swagger_auto_schema(
@@ -152,29 +150,29 @@ class DetailAPIView(APIView):
         #전체에서 자신을 뺀 나머지 스니커 데이터와 비교하여 가장 비슷한 리스트 5개 콜업.
         recommand_data = get_cos_similar(s_features)[:5]
 
-        # #토큰 유무 확인
-        # try:
-        #     u_id = decoder(req.headers['Access-Token'])['user_id']
-        # except AssertionError:
-        #     u_id = None
-        # #토큰 값이 있을 때(로그인 하고 접근 했을 때)
-        # if u_id is not None:
-        #     user = get_object_or_404(User,id=u_id)
-        #     #조회수 카운트
-        #     sneaker.update_view_count
-        #     #유저 접속 기록 데이터 저장
-        #     UserMovementOfViews.objects.create(user_id = user,sneaker_id = sneaker)
-        #     #현 유저가 현재 게시판에서 평가 내역 확인
-        #     user_cod = CopOrDrop.objects.get(user_id = user, board_id = sneaker)
-        #     if user_cod:
-        #         user_cod = CoD_Serializer(user_cod)
-        #     else:
-        #         user_cod = None
-        # #로그인 없이 접근 했을 때
-        # else:
-        #     sneaker.update_view_count
+        #토큰 유무 확인
+        try:
+            u_id = decoder(req.headers['Access-Token'])['user_id']
+        except AssertionError:
+            u_id = None
+        #토큰 값이 있을 때(로그인 하고 접근 했을 때)
+        if u_id is not None:
+            user = get_object_or_404(User,id=u_id)
+            #조회수 카운트
+            sneaker.update_view_count
+            #유저 접속 기록 데이터 저장
+            UserMovementOfViews.objects.create(user_id = user,sneaker_id = sneaker)
+            #현 유저가 현재 게시판에서 평가 내역 확인
+            user_cod = CopOrDrop.objects.get(user_id = user, board_id = sneaker)
+            if user_cod:
+                user_cod = CoD_Serializer(user_cod)
+            else:
+                user_cod = None
+        #로그인 없이 접근 했을 때
+        else:
+            sneaker.update_view_count
     
-        return Response({'board': board.data, 'recommand' : recommand_data}, status = status.HTTP_200_OK)
+        return Response({'board': board.data, 'choice' : user_cod.data['choice'], 'recommand' : recommand_data}, status = status.HTTP_200_OK)
 class CopOrDropAPIView(APIView):
     #cop or drop 평가 저장
     @swagger_auto_schema(

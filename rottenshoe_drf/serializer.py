@@ -44,10 +44,17 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 # 회원가입
+
 class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email','nickname','password']
+        fields = ['email','nickname','password','confirm_password']
+    # save 오버라이딩 -> 조건부 저장
+    def save(self,data):
+        if data['confirm_password'] == data['password']:
+            User(email = data['email'],
+                nickname = data['nickname'],
+                password = data['password']).save()
 
 
 class CoD_Serializer(serializers.ModelSerializer):
