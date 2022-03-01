@@ -214,3 +214,6 @@ frontend : vanilla js / html+css
 
 21-02-26
 - 유사도 로직 문제 발생 -> orm을 뜯어봐야할듯.
+
+21-03-01
+- logger 오류 해결 / drf 내부 viewset, router 등의 내용을 다시 정리하는 시간을 가짐.
