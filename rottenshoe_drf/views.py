@@ -140,9 +140,8 @@ class DetailAPIView(APIView):
         tags = ['detail_page'],
     )
     def get(self,req,id):
-        print(id)
+
         sneaker = Sneakers.objects.get(id = id)
-        print(sneaker)
         sneaker_data = sneaker
         board = SneakerSerializer(sneaker)
         #필요한 데이터만 뽑아서 오기 values_list
