@@ -140,13 +140,13 @@ class DetailAPIView(APIView):
         tags = ['detail_page'],
     )
     def get(self,req,id):
-
         sneaker = Sneakers.objects.get(id = id)
         sneaker_data = sneaker
         board = SneakerSerializer(sneaker)
         #필요한 데이터만 뽑아서 오기 values_list
         #객체 자체를 보내줘야 콜업 가능.
         s_features  = SneakerFeatures.objects.filter(sneaker=sneaker_data)
+        print(s_features)
         #추천리스트 get
         #전체에서 자신을 뺀 나머지 스니커 데이터와 비교하여 가장 비슷한 리스트 5개 콜업.
         recommand_data = get_cos_similar(s_features)[:5]
@@ -156,7 +156,7 @@ class DetailAPIView(APIView):
             u_id = decoder(req.headers['Access-Token'])['user_id']
         except AssertionError:
             u_id = None
-            return Response(status = 200)
+    
         #토큰 값이 있을 때(로그인 하고 접근 했을 때)
         if u_id is not None:
             user = get_object_or_404(User,id=u_id)
