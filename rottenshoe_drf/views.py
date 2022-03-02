@@ -155,6 +155,7 @@ class DetailAPIView(APIView):
             u_id = decoder(req.headers['Access-Token'])['user_id']
         except AssertionError:
             u_id = None
+            return Response(status = 200)
         #토큰 값이 있을 때(로그인 하고 접근 했을 때)
         if u_id is not None:
             user = get_object_or_404(User,id=u_id)
