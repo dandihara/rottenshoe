@@ -21,9 +21,10 @@ def get_cos_similar(target):
     #원하는 필드만 골라서 튜플로 반환 => 리스트로 원한다면 flat속성 true
     featrue_list = SneakerFeatures.objects.values_list('comfortable','grip','spotlight','convenience').exclude(id = target.id)
     target = np.array(target)
+    norm_target = np.norm(target)
     for f in featrue_list:
         f = np.array(f)
-        result.append(np.dot(target,f) /(np.norm(target) * np.norm(f)))
+        result.append(np.dot(target,f) /(norm_target * np.norm(f)))
     result.sort(reverse=True) # 내림차순
     return result
         
