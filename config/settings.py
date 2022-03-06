@@ -110,9 +110,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST' : 'rottenshoedb.cluster-cvt846kbv1ju.ap-northeast-2.rds.amazonaws.com',
-        'NAME': 'rottenshoedb',
-        'USER' : 'rottenadmin',
+        'HOST' : 'rottenshoe-db.cvt846kbv1ju.ap-northeast-2.rds.amazonaws.com',
+        'NAME': 'rottenshoe-db',
+        'USER' : 'moon_admin',
         'PASSWORD' : get_secret("DB_PASSWORD"),
         'PORT' : '3306',
         'OPTIONS': {'charset':'utf8mb4'}
