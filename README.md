@@ -215,3 +215,6 @@ frontend : vanilla js / html+css
 
 21-03-01
 - logger 오류 해결 / drf 내부 viewset, router 등의 내용을 다시 정리하는 시간을 가짐.
+
+21-03-07
+-aws 프리티어 db로 변경 -> maria db는 프리티어가 아님.
