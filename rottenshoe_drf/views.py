@@ -152,7 +152,7 @@ class DetailAPIView(APIView):
         #토큰 유무 확인
         try:
             u_id = decoder(req.headers['Access-Token'])['user_id']
-        except AssertionError:
+        except KeyError:
             u_id = None
     
         #토큰 값이 있을 때(로그인 하고 접근 했을 때)
