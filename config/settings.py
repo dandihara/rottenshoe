@@ -111,7 +111,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'HOST' : 'rottenshoe-db.cvt846kbv1ju.ap-northeast-2.rds.amazonaws.com',
-        'NAME': 'rottenshoe-db',
+        'NAME': 'rottenshoe_db',
         'USER' : 'moon_admin',
         'PASSWORD' : get_secret("DB_PASSWORD"),
         'PORT' : '3306',
