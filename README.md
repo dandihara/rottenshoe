@@ -218,3 +218,6 @@ frontend : vanilla js / html+css
 
 21-03-07
 -aws 프리티어 db로 변경 -> maria db는 프리티어가 아님.
+
+21-03-16
+- 버전2 부터는 fastapi로 ?? django의 단점이 보이기 시작.. -> 너무나 많은 설정들이 있다보니 쓸모없는 코드가 너무나 많이 발생.
